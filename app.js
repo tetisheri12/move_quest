@@ -7,106 +7,170 @@
   var XP_PER_SESSION = 10;
   var XP_PER_LEVEL = 50;
 
-  /* ---------- Content ---------- */
-
-  var VIDEOS = {
-    bodycoach: {
-      id: 'd3LPrhI0v-w',
-      label: 'Body Coach',
-      title: 'Body Coach: 5 Minute Move',
-      channel: 'The Body Coach TV (Joe Wicks)',
-      duration: 'About 6 min (5:49 video)',
-      minutes: 6,
-      equipment: 'No equipment · space to jump · water',
-      steps: [
-        'Clear a space about two big steps wide.',
-        'Press "Watch and follow".',
-        'Copy each move for 40 seconds, then rest for 20 when Joe rests.',
-        'Moves: marching, star jumps, low sprint shuffle, squats, climb the rope.',
-        'Come back here and press Done or Did part.'
-      ],
-      easier: [
-        'Star jumps → step one foot out at a time, arms up.',
-        'Sprint shuffle → quick feet standing tall, or fast marching.',
-        'Squats → sit down onto a chair and stand back up.',
-        'Climb the rope → arms only, feet still.',
-        'Need a breather? Pause the video. Restart when ready.'
-      ]
+  /* ---------- Exercise library ---------- */
+  // unit: 'reps' | 'sec' | 'min'. side: label used for "per leg" / "per side".
+  var EX = {
+    wallPush: {
+      name: 'Wall push-up', needs: ['wall'],
+      how: ['Stand an arm’s length from a wall, hands flat at shoulder height.', 'Keep your body straight like a plank.', 'Bend your elbows to bring your chest towards the wall, then push back.'],
+      easier: 'Stand a little closer to the wall.'
     },
-    nuffield: {
-      id: 'aHVR2FnTpdk',
-      label: 'Nuffield Health',
-      title: 'Nuffield Health kids\u2019 workout',
-      channel: 'Nuffield Health',
-      duration: 'About 15\u201320 min with pauses',
-      minutes: 15,
-      equipment: 'No equipment · mat or carpet · water',
-      steps: [
-        'Clear a space and put a mat or towel on a non-slip floor.',
-        'Press "Watch and follow".',
-        'Watch each new move once before you try it.',
-        'Pause the video between moves whenever you like.',
-        'Come back here and press Done or Did part.'
-      ],
-      easier: [
-        'Step instead of jumping.',
-        'Make moves smaller and slower.',
-        'Hold a wall or chair back for balance.',
-        'Skip a move that feels wrong \u2014 march on the spot instead.',
-        'If the video uses any equipment, do the no-equipment version.'
-      ]
+    slowWallPush: {
+      name: 'Slow wall push-up', needs: ['wall'],
+      how: ['Same as a wall push-up.', 'Count 1–2–3 on the way in, then push back at normal speed.'],
+      easier: 'Count to 2 instead of 3.'
+    },
+    inclinePush: {
+      name: 'Incline push-up', needs: ['sturdy sofa or table edge'], adultCheck: true,
+      how: ['Ask an adult to check the sofa or table can’t slide or tip.', 'Hands on the edge, feet back, body straight.', 'Lower your chest towards the edge, then push away.'],
+      easier: 'Go back to wall push-ups.'
+    },
+    chairSquat: {
+      name: 'Chair squat', needs: ['sturdy chair'],
+      how: ['Stand in front of a sturdy chair, feet hip-width apart.', 'Sit back slowly until you just touch the seat.', 'Stand up tall again, pushing through your whole foot.'],
+      easier: 'Sit all the way down, then stand up.'
+    },
+    deadBug: {
+      name: 'Dead bug', needs: ['mat'],
+      how: ['Lie on your back, arms pointing at the ceiling, knees bent above your hips.', 'Keep your lower back gently pressed to the floor.', 'Slowly stretch one leg out, bring it back, then switch.'],
+      easier: 'Keep the knee bent and just tap your heel down.'
+    },
+    kneePlank: {
+      name: 'Plank on knees', needs: ['mat'],
+      how: ['Forearms on the floor, elbows under shoulders, knees down.', 'Make a straight line from head to knees.', 'Breathe normally while you hold.'],
+      easier: 'Hold for a shorter time.'
+    },
+    fullPlank: {
+      name: 'Plank', needs: ['mat'],
+      how: ['Forearms on the floor, elbows under shoulders.', 'Lift your knees so you’re on your toes, body in a straight line.', 'Stop the set if your hips sag or your back aches.'],
+      easier: 'Drop your knees to the floor.'
+    },
+    sidePlankKnees: {
+      name: 'Side plank on knees', needs: ['mat'],
+      how: ['Lie on your side, propped on your forearm, knees bent behind you.', 'Lift your hips so your body is straight from head to knees.', 'Hold, then do the other side.'],
+      easier: 'Hold for a shorter time.'
+    },
+    sideLegLift: {
+      name: 'Side leg lift', needs: ['mat'],
+      how: ['Lie on your side, head resting on your arm.', 'Lift your top leg slowly, toes pointing forward.', 'Lower it slowly. Do all reps, then switch sides.'],
+      easier: 'Make the lift smaller.'
+    },
+    stork: {
+      name: 'Stork stance', needs: ['wall'],
+      how: ['Stand next to a wall.', 'Lift one foot and balance for a slow count of five.', 'Put it down, then do the other leg.'],
+      easier: 'Rest one fingertip on the wall.'
+    },
+    bridge: {
+      name: 'Glute bridge', needs: ['mat'],
+      how: ['Lie on your back, knees bent, feet flat on the floor.', 'Squeeze your bottom and lift your hips.', 'Lower slowly.'],
+      easier: 'Lift only halfway.'
+    },
+    birdDog: {
+      name: 'Bird dog', needs: ['mat'],
+      how: ['Start on hands and knees.', 'Reach one arm forward and the opposite leg back. Hold for two seconds.', 'Come back and switch sides.'],
+      easier: 'Move only the leg, or only the arm.'
+    },
+    superman: {
+      name: 'Superman hold', needs: ['mat'],
+      how: ['Lie on your tummy, arms stretched forward.', 'Lift your arms and legs a little off the floor, eyes looking down.', 'Hold, then relax.'],
+      easier: 'Lift only your arms, or only your legs.'
+    },
+    splitSquat: {
+      name: 'Supported split squat', needs: ['sturdy chair'],
+      how: ['Hold a chair back or the wall.', 'One foot forward, one foot back.', 'Bend both knees to lower straight down, then push up. Do all reps, then swap legs.'],
+      easier: 'Make the dip smaller.'
+    },
+    wallSit: {
+      name: 'Wall sit', needs: ['wall'],
+      how: ['Back flat against a wall.', 'Slide down until your knees are bent — no lower than chair height.', 'Hold, then slide back up.'],
+      easier: 'Don’t slide down as far.'
+    },
+    stepUp: {
+      name: 'Step-up', needs: ['low stable step'], adultCheck: true,
+      how: ['Use a low, stable step, such as the bottom stair with a handrail. Ask an adult to check it.', 'Step up with one foot, stand tall, step down.', 'Do all reps, then lead with the other foot.'],
+      easier: 'Hold the handrail, or use a lower step.'
+    },
+    flow: {
+      name: 'Down Dog beginner flow', needs: ['mat'],
+      how: ['Child’s pose: 3 slow breaths.', 'Cat–cow on hands and knees × 5.', 'Downward dog with soft, bent knees: 3 breaths.', 'Low lunge, one side then the other.', 'Forward fold, then roll up slowly.', 'Or follow a 5-minute beginner session in the Down Dog app.'],
+      easier: 'Stay in child’s pose longer.'
+    },
+    wallLean: {
+      name: 'Wall handstand-lean', needs: ['wall'], adult: true,
+      how: ['Only when an adult is with you.', 'Face the wall and reach your arms up, hands flat on the wall.', 'Lean in with a long, straight body — feet stay on the floor.', 'Hold, breathing slowly, then step back.'],
+      easier: 'Lean in less.'
     }
   };
 
+  function it(ex, sets, amount, unit, side) { return { ex: ex, sets: sets, amount: amount, unit: unit || 'reps', side: side || null }; }
+
+  var DAY_A1 = [it('wallPush', 2, 6), it('chairSquat', 2, 6), it('deadBug', 2, 4, 'reps', 'leg'), it('kneePlank', 2, 10, 'sec')];
+  var DAY_B1 = [it('sideLegLift', 2, 6, 'reps', 'side'), it('stork', 2, 4, 'reps', 'leg'), it('bridge', 2, 8), it('birdDog', 2, 4, 'reps', 'side')];
+
+  var WEEKS = {
+    1: {
+      theme: 'Learn the moves',
+      A: { title: 'Push & core', items: DAY_A1 },
+      B: { title: 'Balance & back', items: DAY_B1 },
+      C: { title: 'Day A again + Down Dog flow', items: DAY_A1.concat([it('flow', 1, 5, 'min')]) }
+    },
+    2: {
+      theme: 'A little more',
+      A: { title: 'Push & core', items: [it('wallPush', 3, 8), it('chairSquat', 3, 8), it('deadBug', 3, 4, 'reps', 'leg'), it('kneePlank', 3, 15, 'sec')] },
+      B: { title: 'Balance & back', items: [it('sideLegLift', 3, 8, 'reps', 'side'), it('stork', 3, 5, 'reps', 'leg'), it('bridge', 3, 10), it('birdDog', 3, 5, 'reps', 'side')] },
+      C: { title: 'Legs + Down Dog flow', items: [it('splitSquat', 2, 4, 'reps', 'leg'), it('wallSit', 3, 15, 'sec'), it('flow', 1, 5, 'min')] }
+    },
+    3: {
+      theme: 'Control',
+      A: { title: 'Slow pushes & squats', items: [it('slowWallPush', 3, 8), it('inclinePush', 2, 5), it('chairSquat', 3, 10)] },
+      B: { title: 'Core strength', items: [it('fullPlank', 3, 15, 'sec'), it('deadBug', 3, 6, 'reps', 'leg'), it('sidePlankKnees', 2, 10, 'sec', 'side'), it('superman', 3, 15, 'sec')] },
+      C: { title: 'Strong legs', items: [it('splitSquat', 3, 5, 'reps', 'leg'), it('stepUp', 3, 6, 'reps', 'leg'), it('wallSit', 3, 20, 'sec')] }
+    },
+    4: {
+      theme: 'Flow and celebrate',
+      A: { title: 'My favourite five', pick5: true, items: [] },
+      B: { title: 'Balance & mobility', items: [it('stork', 2, 4, 'reps', 'leg'), it('birdDog', 2, 5, 'reps', 'side'), it('flow', 1, 5, 'min'), it('wallLean', 1, 10, 'sec')] },
+      C: { title: 'Show what I can do', items: DAY_A1.concat(DAY_B1), showOff: true }
+    }
+  };
+  // Week 3 plank is "10–20 sec": the timer uses 15, the label shows the range.
+  WEEKS[3].B.items[0].label = '10–20 sec';
+
+  var PICKABLE = ['wallPush', 'slowWallPush', 'inclinePush', 'chairSquat', 'splitSquat', 'wallSit', 'stepUp', 'deadBug', 'kneePlank', 'fullPlank', 'sidePlankKnees', 'sideLegLift', 'stork', 'bridge', 'birdDog', 'superman'];
+  var PICK_AMOUNT = { sec: 15, reps: 8 };
+  var TIMED = { kneePlank: 1, fullPlank: 1, sidePlankKnees: 1, superman: 1, wallSit: 1 };
+  var SIDED = { deadBug: 'leg', sideLegLift: 'side', stork: 'leg', birdDog: 'side', splitSquat: 'leg', stepUp: 'leg', sidePlankKnees: 'side' };
+
+  var GENTLE = { title: 'Gentle flow', items: [it('flow', 1, 5, 'min'), it('stork', 1, 3, 'reps', 'leg')] };
+
   var OTHER_IDEAS = {
     sat: ['Dance to a few favourite songs', 'Bike ride or scooter with an adult', 'Football, tag or the playground', 'Obstacle course with cushions on the floor'],
-    sun: ['Gentle stretches', 'A walk outside with family', 'Slow dance to a calm song', 'Or simply rest \u2014 that counts too']
+    sun: ['Gentle stretches', 'A walk outside with family', 'Slow dance to a calm song', 'Or simply rest — that counts too']
   };
 
-  // weekday: 0 = Monday ... 6 = Sunday
+  // weekday: 0 = Monday ... 6 = Sunday. options: A/B/C (programme days), flow, other
   var ACTIVITIES = {
-    mon: {
-      weekday: 0, kind: 'video', video: 'bodycoach', bonusRound: true,
-      name: 'Body Coach: 5 Minute Move',
-      extraTag: 'Optional 2nd round'
-    },
+    mon: { weekday: 0, kind: 'choice', options: ['A'] },
     tue: {
       weekday: 1, kind: 'session', name: 'Swimming',
       duration: 'About 60 min', minutes: 60,
       equipment: 'Swimsuit, goggles, towel, water bottle',
-      noVideo: 'No video today \u2014 this is your usual swimming session.',
+      note: 'No home workout today — this is your usual swimming session.',
       steps: ['Go to your usual swimming session.', 'Follow your coach or teacher.', 'Afterwards, log the real time you swam.'],
       easier: ['Rest at the wall whenever you need to.', 'Tell the coach if anything hurts.', 'Did a shorter swim? Press Did part.']
     },
     wed: {
       weekday: 2, kind: 'session', name: 'School sport',
-      duration: 'Varies \u2014 record the actual time', minutes: null,
+      duration: 'Varies — record the actual time', minutes: null,
       equipment: 'PE kit, trainers, water bottle',
-      noVideo: 'No video today \u2014 this is your school sport session.',
+      note: 'No home workout today — this is your school sport session.',
       steps: ['Take part in sport at school.', 'When you get home, write down how long it really lasted.', 'Press Done (or Did part if you sat some out).'],
       easier: ['Ask the teacher for an easier version.', 'Take water breaks.', 'Tell the teacher if anything hurts.']
     },
-    thu: {
-      weekday: 3, kind: 'video', video: 'nuffield',
-      name: 'Nuffield Health workout',
-      extraTag: 'Pauses welcome'
-    },
-    fri: {
-      weekday: 4, kind: 'choice', options: ['bodycoach', 'nuffield'],
-      name: 'Your choice: pick a video'
-    },
-    sat: {
-      weekday: 5, kind: 'choice', options: ['bodycoach', 'nuffield', 'other'],
-      name: 'Your choice: a video or something fun',
-      otherDuration: 'As long as feels good', otherMinutes: 20,
-      otherEquipment: 'Depends on the activity'
-    },
-    sun: {
-      weekday: 6, kind: 'choice', options: ['other', 'nuffield', 'bodycoach'], optional: true, gentle: true,
-      name: 'Gentle movement or rest',
-      otherDuration: 'Optional \u2014 10\u201320 min if you like', otherMinutes: 15,
-      otherEquipment: 'Nothing needed'
-    }
+    thu: { weekday: 3, kind: 'choice', options: ['B'] },
+    fri: { weekday: 4, kind: 'choice', options: ['C', 'A', 'B'] },
+    sat: { weekday: 5, kind: 'choice', options: ['other', 'A', 'B', 'C'], otherDuration: 'As long as feels good', otherMinutes: 20, otherEquipment: 'Depends on the activity' },
+    sun: { weekday: 6, kind: 'choice', options: ['flow', 'other'], optional: true, gentle: true, otherDuration: 'Optional — 10–20 min if you like', otherMinutes: 15, otherEquipment: 'Nothing needed' }
   };
   var ACT_BY_WEEKDAY = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
   var DAY_NAMES = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -114,18 +178,18 @@
   var FEEDBACK = { easy: 'Easy', right: 'About right', hard: 'Too hard' };
 
   var BADGES = [
-    { id: 'first', icon: '\uD83D\uDE80', name: 'Lift-off', desc: 'Take part in your first session' },
-    { id: 'part', icon: '\uD83E\uDDE9', name: 'Every Bit Counts', desc: 'Log a "Did part" session' },
-    { id: 'bonus', icon: '\uD83D\uDD01', name: 'Bonus Round', desc: 'Do a second Body Coach round' },
-    { id: 'both', icon: '\uD83C\uDFAC', name: 'Two Coaches', desc: 'Try both workout videos' },
-    { id: 'splash', icon: '\uD83C\uDF0A', name: 'Splash', desc: 'Log a swimming session' },
-    { id: 'team', icon: '\uD83C\uDFC5', name: 'Team Player', desc: 'Log school sport' },
-    { id: 'explorer', icon: '\uD83E\uDDED', name: 'Explorer', desc: 'Log your own fun activity' },
-    { id: 'recharge', icon: '\uD83C\uDF19', name: 'Recharge', desc: 'Log a rest day \u2014 rest is part of training' },
-    { id: 'voice', icon: '\uD83D\uDCAC', name: 'Coach\u2019s Ear', desc: 'Give feedback 3 times' },
-    { id: 'flex', icon: '\uD83D\uDD00', name: 'Flex Planner', desc: 'Finish a rescheduled session' },
-    { id: 'week3', icon: '\u2B50', name: 'Busy Week', desc: 'Take part 3 times in one week' },
-    { id: 'xp100', icon: '\uD83D\uDC8E', name: '100 XP', desc: 'Reach 100 XP' }
+    { id: 'first', icon: '🚀', name: 'Lift-off', desc: 'Take part in your first session' },
+    { id: 'part', icon: '🧩', name: 'Every Bit Counts', desc: 'Log a "Did part" session' },
+    { id: 'trio', icon: '🔺', name: 'A-B-C', desc: 'Do Day A, B and C in one week' },
+    { id: 'flow', icon: '🧘', name: 'Flow Finder', desc: 'Do a Down Dog flow session' },
+    { id: 'splash', icon: '🌊', name: 'Splash', desc: 'Log a swimming session' },
+    { id: 'team', icon: '🏅', name: 'Team Player', desc: 'Log school sport' },
+    { id: 'explorer', icon: '🧭', name: 'Explorer', desc: 'Log your own fun activity' },
+    { id: 'recharge', icon: '🌙', name: 'Recharge', desc: 'Log a rest day — rest is part of training' },
+    { id: 'voice', icon: '💬', name: 'Coach’s Ear', desc: 'Give feedback 3 times' },
+    { id: 'flex', icon: '🔀', name: 'Flex Planner', desc: 'Finish a rescheduled session' },
+    { id: 'week3', icon: '⭐', name: 'Busy Week', desc: 'Take part 3 times in one week' },
+    { id: 'finisher', icon: '🏆', name: 'Show-Off Day', desc: 'Finish Week 4, Day C' }
   ];
 
   /* ---------- Dates (local time, YYYY-MM-DD) ---------- */
@@ -136,6 +200,7 @@
   function addDays(s, n) { var d = parseYmd(s); d.setDate(d.getDate() + n); return ymd(d); }
   function weekdayOf(s) { return (parseYmd(s).getDay() + 6) % 7; }
   function weekStartOf(s) { return addDays(s, -weekdayOf(s)); }
+  function daysBetween(a, b) { return Math.round((parseYmd(b) - parseYmd(a)) / 86400000); }
   function todayStr() { return ymd(new Date()); }
   function fmtShort(s) { return parseYmd(s).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }); }
   function fmtLong(s) { return parseYmd(s).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' }); }
@@ -147,14 +212,13 @@
   }
   function nowLocalInput(dateStr) {
     var n = new Date();
-    var time = pad(n.getHours()) + ':' + pad(n.getMinutes());
-    return (dateStr || ymd(n)) + 'T' + time;
+    return (dateStr || ymd(n)) + 'T' + pad(n.getHours()) + ':' + pad(n.getMinutes());
   }
 
   /* ---------- State ---------- */
 
   function emptyState() {
-    return { version: 1, plannedTimes: {}, entries: {}, choices: {}, otherText: {} };
+    return { version: 2, programStart: weekStartOf(todayStr()), programWeeks: {}, plannedTimes: {}, entries: {}, choices: {}, otherText: {}, sets: {}, picks: {} };
   }
 
   var storageOk = true;
@@ -177,9 +241,15 @@
   function normalise(s) {
     if (!isObj(s) || !isObj(s.entries)) return null;
     var out = emptyState();
-    out.plannedTimes = isObj(s.plannedTimes) ? s.plannedTimes : {};
-    out.choices = isObj(s.choices) ? s.choices : {};
-    out.otherText = isObj(s.otherText) ? s.otherText : {};
+    ['programWeeks', 'plannedTimes', 'otherText', 'sets', 'picks'].forEach(function (k) { if (isObj(s[k])) out[k] = s[k]; });
+    if (typeof s.programStart === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(s.programStart)) out.programStart = weekStartOf(s.programStart);
+    // Only keep choices that are valid for this version (old video choices are dropped)
+    if (isObj(s.choices)) {
+      Object.keys(s.choices).forEach(function (k) {
+        var act = ACTIVITIES[k.split('|')[1]];
+        if (act && act.options && act.options.indexOf(s.choices[k]) !== -1) out.choices[k] = s.choices[k];
+      });
+    }
     Object.keys(s.entries).forEach(function (k) {
       var e = s.entries[k];
       if (isObj(e) && ACTIVITIES[e.act] && /^\d{4}-\d{2}-\d{2}$/.test(e.date) &&
@@ -192,6 +262,42 @@
 
   var state = load();
   var view = { weekStart: weekStartOf(todayStr()), selected: todayStr() };
+  var guide = {}; // cardKey -> current exercise index while following along
+
+  /* ---------- Programme ---------- */
+
+  function programWeekFor(date) {
+    var ws = weekStartOf(date);
+    var o = Number(state.programWeeks[ws]);
+    if (o >= 1 && o <= 4) return o;
+    var n = Math.floor(daysBetween(state.programStart, ws) / 7) + 1;
+    return Math.max(1, Math.min(4, n));
+  }
+
+  function sessionItems(session, pweek, cardKey) {
+    if (session === 'flow') return GENTLE.items;
+    var s = WEEKS[pweek][session];
+    if (!s.pick5) return s.items;
+    var picks = (state.picks[cardKey] || []).filter(function (id) { return EX[id]; });
+    return picks.map(function (id) {
+      var u = TIMED[id] ? 'sec' : 'reps';
+      return it(id, 2, PICK_AMOUNT[u], u, SIDED[id]);
+    });
+  }
+
+  function amountLabel(i) {
+    if (i.unit === 'min') return i.amount + ' min';
+    var amt = i.label || (i.amount + (i.unit === 'sec' ? ' sec' : ''));
+    return (i.sets > 1 ? i.sets + ' × ' : '') + amt + (i.side ? ' per ' + i.side : '');
+  }
+
+  function equipmentFor(items) {
+    var set = {};
+    items.forEach(function (i) { (EX[i.ex].needs || []).forEach(function (n) { set[n] = true; }); });
+    var list = Object.keys(set);
+    list.push('water');
+    return list.join(' · ');
+  }
 
   /* ---------- Derived values ---------- */
 
@@ -205,9 +311,7 @@
     allEntries().forEach(function (e) {
       if (e.status === 'rescheduled' && e.to === date) {
         var key = date + '|' + e.act;
-        if (!list.some(function (c) { return c.key === key; })) {
-          list.push({ key: key, date: date, act: e.act, movedFrom: e.date });
-        }
+        if (!list.some(function (c) { return c.key === key; })) list.push({ key: key, date: date, act: e.act, movedFrom: e.date });
       }
     });
     return list;
@@ -241,25 +345,26 @@
   function earnedBadges() {
     var es = allEntries();
     var part = es.filter(isParticipation);
-    var videos = {};
-    part.forEach(function (e) { if (e.video) videos[e.video] = true; });
-    var perWeek = {};
-    part.forEach(function (e) { var w = weekStartOf(e.date); perWeek[w] = (perWeek[w] || 0) + 1; });
-    var got = {
+    var perWeek = {}, abc = {};
+    part.forEach(function (e) {
+      var w = weekStartOf(e.date);
+      perWeek[w] = (perWeek[w] || 0) + 1;
+      if (e.session === 'A' || e.session === 'B' || e.session === 'C') { abc[w] = abc[w] || {}; abc[w][e.session] = true; }
+    });
+    return {
       first: part.length > 0,
       part: part.some(function (e) { return e.status === 'part'; }),
-      bonus: part.some(function (e) { return e.secondRound; }),
-      both: !!(videos.bodycoach && videos.nuffield),
+      trio: Object.keys(abc).some(function (w) { return abc[w].A && abc[w].B && abc[w].C; }),
+      flow: part.some(function (e) { return e.session === 'flow' || (e.session === 'C' && (e.pweek === 1 || e.pweek === 2)) || (e.session === 'B' && e.pweek === 4); }),
       splash: part.some(function (e) { return e.act === 'tue'; }),
       team: part.some(function (e) { return e.act === 'wed'; }),
-      explorer: part.some(function (e) { return e.video === 'other'; }),
+      explorer: part.some(function (e) { return e.session === 'other'; }),
       recharge: es.some(function (e) { return e.status === 'rest'; }),
       voice: es.filter(function (e) { return e.feedback; }).length >= 3,
       flex: part.some(function (e) { return e.movedFrom; }),
       week3: Object.keys(perWeek).some(function (w) { return perWeek[w] >= 3; }),
-      xp100: totalXP() >= 100
+      finisher: part.some(function (e) { return e.session === 'C' && e.pweek === 4; })
     };
-    return got;
   }
 
   /* ---------- Helpers ---------- */
@@ -282,36 +387,49 @@
 
   function choiceFor(card) {
     var a = ACTIVITIES[card.act];
-    if (a.kind !== 'choice') return a.kind === 'video' ? a.video : null;
+    if (a.kind !== 'choice') return null;
     var c = state.choices[card.key];
     return a.options.indexOf(c) !== -1 ? c : a.options[0];
   }
 
-  // Resolve what this card currently shows (video or not, duration, equipment, steps)
+  // What this card currently shows
   function resolve(card) {
     var a = ACTIVITIES[card.act];
     var choice = choiceFor(card);
-    var v = choice && VIDEOS[choice] ? VIDEOS[choice] : null;
-    if (v) {
+    var pweek = programWeekFor(card.date);
+    if (a.kind === 'session') {
+      return { session: null, pweek: pweek, title: a.name, duration: a.duration, minutes: a.minutes, equipment: a.equipment, steps: a.steps, easier: a.easier, note: a.note };
+    }
+    if (choice === 'A' || choice === 'B' || choice === 'C') {
+      var s = WEEKS[pweek][choice];
+      var items = sessionItems(choice, pweek, card.key);
+      var hasFlow = items.some(function (i) { return i.ex === 'flow'; });
       return {
-        choice: choice, video: v,
-        duration: a.gentle ? 'Optional \u2014 go slowly, stop any time' : v.duration,
-        minutes: v.minutes, equipment: v.equipment,
-        steps: v.steps,
-        easier: a.gentle ? ['Go at half speed \u2014 that\u2019s the goal today.'].concat(v.easier) : v.easier
+        session: choice, pweek: pweek, workout: s, items: items,
+        title: 'Day ' + choice + ': ' + s.title,
+        duration: s.pick5 ? 'About 15 min' : (hasFlow ? 'About 15–20 min' : 'About 10–15 min'),
+        minutes: hasFlow || s.pick5 ? 15 : 12,
+        equipment: s.pick5 ? 'Depends on your picks · water' : equipmentFor(items)
       };
     }
-    if (a.kind === 'session') {
-      return { choice: null, video: null, duration: a.duration, minutes: a.minutes, equipment: a.equipment, steps: a.steps, easier: a.easier, noVideo: a.noVideo };
+    if (choice === 'flow') {
+      return { session: 'flow', pweek: pweek, workout: GENTLE, items: GENTLE.items, title: 'Gentle flow (optional)', duration: 'About 10 min, optional', minutes: 10, equipment: equipmentFor(GENTLE.items) };
     }
-    // 'other' activity on Saturday / Sunday
     var ideas = OTHER_IDEAS[card.act] || [];
     return {
-      choice: 'other', video: null, duration: a.otherDuration, minutes: a.otherMinutes, equipment: a.otherEquipment,
-      steps: ['Pick something you enjoy and write it below.', 'Ideas: ' + ideas.join(' · ') + '.', 'Press Done, Did part or Rest when you\u2019re finished.'],
-      easier: ['Shorter is fine.', 'Choose something calm if you\u2019re tired.', 'Ask an adult before trying anything new.'],
-      noVideo: a.gentle ? 'Today is easy-going. Rest is a perfectly good choice.' : 'No video needed for your own activity.'
+      session: 'other', pweek: pweek,
+      title: a.gentle ? 'Gentle movement or rest' : 'Your own fun activity',
+      duration: a.otherDuration, minutes: a.otherMinutes, equipment: a.otherEquipment,
+      steps: ['Pick something you enjoy and write it below.', 'Ideas: ' + ideas.join(' · ') + '.', 'Press Done, Did part or Rest when you’re finished.'],
+      easier: ['Shorter is fine.', 'Choose something calm if you’re tired.', 'Ask an adult before trying anything new.'],
+      note: a.gentle ? 'Today is easy-going. Rest is a perfectly good choice.' : 'Your choice today.'
     };
+  }
+
+  function choiceLabel(o, a) {
+    if (o === 'other') return a.gentle ? 'Rest / my own' : 'Something else';
+    if (o === 'flow') return 'Gentle flow';
+    return 'Day ' + o;
   }
 
   /* ---------- Rendering ---------- */
@@ -330,9 +448,9 @@
   function renderWeek() {
     var start = view.weekStart;
     $('#weekLabel').textContent = parseYmd(start).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) +
-      ' \u2013 ' + parseYmd(addDays(start, 6)).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+      ' – ' + parseYmd(addDays(start, 6)).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
     var today = todayStr();
-    var icons = { done: '\u2605', rest: '\u263E', restday: '\u263E', moved: '\u21B7', today: '\u25B6', planned: '\u2022', open: '\u2013' };
+    var icons = { done: '★', rest: '☾', restday: '☾', moved: '↷', today: '▶', planned: '•', open: '–' };
     var words = { done: 'took part', rest: 'rest day', restday: 'rest day', moved: 'moved', today: 'today', planned: 'coming up', open: 'not logged' };
     var html = '';
     for (var i = 0; i < 7; i++) {
@@ -350,9 +468,18 @@
     }
     $('#strip').innerHTML = html;
 
+    var pw = programWeekFor(start);
+    $('#programWeek').innerHTML =
+      '<span class="pw-label">Programme week</span>' +
+      '<div class="pw-buttons" role="group" aria-label="Programme week for this calendar week">' +
+      [1, 2, 3, 4].map(function (n) {
+        return '<button type="button" class="btn small" data-action="set-pweek" data-week="' + n + '" aria-pressed="' + (n === pw) + '">' + n + '</button>';
+      }).join('') + '</div>' +
+      '<span class="pw-theme">' + esc(WEEKS[pw].theme) + '</span>';
+
     var s = weekStats(start);
     var txt = s.sessions === 0
-      ? 'No sessions logged this week yet \u2014 every session you take part in earns 10 XP.'
+      ? 'No sessions logged this week yet — every session you take part in earns 10 XP.'
       : '<strong>' + s.sessions + '</strong> session' + (s.sessions === 1 ? '' : 's') + ' · <strong>' + s.minutes + '</strong> min · <strong>' + s.xp + '</strong> XP this week';
     if (s.rests) txt += ' · ' + s.rests + ' rest day' + (s.rests === 1 ? '' : 's');
     $('#weekSummary').innerHTML = txt;
@@ -361,9 +488,72 @@
   function renderDay() {
     var d = view.selected;
     var label = fmtLong(d);
-    if (d === todayStr()) label = 'Today \u2014 ' + label;
+    if (d === todayStr()) label = 'Today — ' + label;
     $('#dayTitle').textContent = label;
     $('#cards').innerHTML = cardsForDate(d).map(renderCard).join('');
+  }
+
+  function renderExerciseList(card, r) {
+    var done = state.sets[card.key] || {};
+    var picker = '';
+    if (r.workout && r.workout.pick5) {
+      var picks = state.picks[card.key] || [];
+      picker = '<fieldset class="picker"><legend>Pick your 5 favourite exercises (' + picks.length + '/5)</legend><div class="pills">' +
+        PICKABLE.map(function (id) {
+          var on = picks.indexOf(id) !== -1;
+          return '<label><input type="checkbox" data-field="pick" value="' + id + '"' + (on ? ' checked' : '') +
+            (!on && picks.length >= 5 ? ' disabled' : '') + '><span>' + esc(EX[id].name) + '</span></label>';
+        }).join('') + '</div><p class="hint">Do each one 2 rounds — 8 reps or a 15-second hold, or whatever felt “about right” before.</p></fieldset>';
+    }
+    if (!r.items.length) return picker;
+    var rows = r.items.map(function (i, idx) {
+      var ex = EX[i.ex];
+      var n = Math.min(done[idx] || 0, i.sets);
+      var flags = (ex.adult ? '<span class="flag adult">Adult present only</span>' : '') + (ex.adultCheck ? '<span class="flag">Adult checks the setup</span>' : '');
+      return '<li class="ex' + (n >= i.sets ? ' ex-done' : '') + '"><span class="ex-name">' + esc(ex.name) + '</span>' +
+        '<span class="ex-amt">' + esc(amountLabel(i)) + '</span>' + flags +
+        '<span class="ex-sets" aria-label="' + n + ' of ' + i.sets + ' sets done">' + dots(n, i.sets) + '</span></li>';
+    }).join('');
+    var intro = r.workout && r.workout.showOff
+      ? '<p class="note">Week 1 moves again — notice how much easier they feel now, and say so in the feedback.</p>' : '';
+    return picker + intro + '<ol class="ex-list">' + rows + '</ol>';
+  }
+
+  function dots(n, total) {
+    var s = '';
+    for (var k = 0; k < total; k++) s += '<span class="dot' + (k < n ? ' on' : '') + '" aria-hidden="true"></span>';
+    return s;
+  }
+
+  function renderGuide(card, r) {
+    var items = r.items;
+    if (!items.length) return '<div class="guide"><p>Pick your 5 exercises first.</p></div>';
+    var idx = Math.min(guide[card.key] || 0, items.length);
+    if (idx >= items.length) {
+      return '<div class="guide finished"><p class="g-big">🎉 All exercises finished!</p><p>Press <strong>Done</strong> below to log it and get your XP.</p>' +
+        '<div class="row"><button type="button" class="btn small ghost" data-action="g-prev">‹ Back</button></div></div>';
+    }
+    var i = items[idx];
+    var ex = EX[i.ex];
+    var n = (state.sets[card.key] || {})[idx] || 0;
+    var setWord = i.unit === 'min' ? '' : 'Set ' + Math.min(n + 1, i.sets) + ' of ' + i.sets;
+    var timer = (i.unit === 'sec' || i.unit === 'min')
+      ? '<button type="button" class="btn timer" data-action="g-timer" data-sec="' + (i.unit === 'min' ? i.amount * 60 : i.amount) + '">⏱ Start ' + (i.unit === 'min' ? i.amount + ' min' : i.amount + ' sec') + ' timer</button>' : '';
+    var adult = ex.adult ? '<p class="flag adult big">Only with an adult in the room. Feet stay on the floor.</p>' : '';
+    return '<div class="guide" aria-live="polite">' +
+      '<p class="g-count">Exercise ' + (idx + 1) + ' of ' + items.length + '</p>' +
+      '<p class="g-big">' + esc(ex.name) + '</p>' +
+      '<p class="g-amt">' + esc(amountLabel(i)) + (setWord ? ' · ' + setWord : '') + '</p>' + adult +
+      '<ol class="g-how">' + ex.how.map(function (h) { return '<li>' + esc(h) + '</li>'; }).join('') + '</ol>' +
+      '<p class="g-easier"><strong>Easier:</strong> ' + esc(ex.easier) + '</p>' +
+      '<p class="g-sets">' + dots(n, i.sets) + '</p>' +
+      '<div class="row g-controls">' + timer +
+      '<button type="button" class="btn primary" data-action="g-set"' + (n >= i.sets ? ' disabled' : '') + '>✔ ' + (i.unit === 'min' ? 'Finished' : 'Set done') + '</button>' +
+      '<button type="button" class="btn ghost" data-action="g-skip">Skip</button></div>' +
+      '<div class="row"><button type="button" class="btn small ghost" data-action="g-prev"' + (idx === 0 ? ' disabled' : '') + '>‹ Back</button>' +
+      '<button type="button" class="btn small" data-action="g-next">Next exercise ›</button></div>' +
+      '<p class="hint">Rest as long as you need between sets.</p>' +
+      '</div>';
   }
 
   function renderCard(card) {
@@ -374,54 +564,51 @@
     var planned = state.plannedTimes[wd] || '';
 
     var head =
-      '<div class="card-head"><div><div class="when">' + esc(DAY_NAMES[wd]) + ' · ' + esc(fmtShort(card.date)) + '</div></div>' +
+      '<div class="card-head"><div class="when">' + esc(DAY_NAMES[wd]) + ' · ' + esc(fmtShort(card.date)) + '</div>' +
       '<label class="planned">Planned time <input type="time" data-field="planned" data-weekday="' + wd + '" value="' + esc(planned) + '" aria-label="Planned time for ' + DAY_NAMES[wd] + 's"></label></div>';
 
-    // Moved away from this date
     if (e && e.status === 'rescheduled') {
+      var rr = resolve(card);
       return '<article class="card moved-out" data-key="' + k + '">' + head +
-        '<h3>' + esc(a.name) + '</h3>' +
-        '<div class="logbox"><div class="result moved">\u21B7 Moved to ' + esc(fmtShort(e.to)) + '</div>' +
-        '<p class="muted">Nothing missed \u2014 it\u2019s waiting on the new day.</p>' +
+        '<h3>' + esc(rr.title) + '</h3>' +
+        '<div class="logbox"><div class="result moved">↷ Moved to ' + esc(fmtShort(e.to)) + '</div>' +
+        '<p class="muted">Nothing missed — it’s waiting on the new day.</p>' +
         '<div class="row"><button type="button" class="btn small" data-action="goto" data-date="' + esc(e.to) + '">Go to ' + esc(fmtShort(e.to)) + '</button>' +
         '<button type="button" class="btn small ghost" data-action="undo">Undo move</button></div></div></article>';
     }
 
     var r = resolve(card);
-    var tags = '<span class="tag">\u23F1 ' + esc(r.duration) + '</span><span class="tag">\uD83C\uDF92 ' + esc(r.equipment) + '</span>';
-    if (a.extraTag) tags += '<span class="tag">' + esc(a.extraTag) + '</span>';
+    var tags = '<span class="tag">⏱ ' + esc(r.duration) + '</span><span class="tag">🎒 ' + esc(r.equipment) + '</span>';
+    if (r.workout && r.session !== 'flow') tags += '<span class="tag week">Week ' + r.pweek + ' · ' + esc(WEEKS[r.pweek].theme) + '</span>';
     if (a.optional) tags += '<span class="tag opt">Optional</span>';
     if (card.movedFrom) tags += '<span class="tag moved">Moved from ' + esc(fmtShort(card.movedFrom)) + '</span>';
 
     var choices = '';
-    if (a.kind === 'choice') {
-      choices = '<div class="choices" role="group" aria-label="Choose an activity">' + a.options.map(function (o) {
-        var lbl = o === 'other' ? (a.gentle ? 'Gentle / my own' : 'Something else') : VIDEOS[o].label;
-        return '<button type="button" class="btn small" data-action="choose" data-choice="' + o + '" aria-pressed="' + (r.choice === o) + '">' + esc(lbl) + '</button>';
+    if (a.kind === 'choice' && a.options.length > 1) {
+      choices = '<div class="choices" role="group" aria-label="Choose what to do">' + a.options.map(function (o) {
+        return '<button type="button" class="btn small" data-action="choose" data-choice="' + o + '" aria-pressed="' + (r.session === o) + '">' + esc(choiceLabel(o, a)) + '</button>';
       }).join('') + '</div>';
+      if (card.act === 'fri') choices += '<p class="hint">Day C is today’s plan — or catch up on A or B if you missed one.</p>';
+      if (card.act === 'sat') choices += '<p class="hint">Something fun, or catch up on a programme day.</p>';
     }
 
-    var title = a.kind === 'choice' && r.video ? r.video.title : a.name;
-    if (a.kind === 'choice' && !r.video) title = a.gentle ? 'Gentle movement or rest' : 'Your own fun activity';
-
-    var media;
-    if (r.video) {
-      var v = r.video;
-      media = '<div class="video-box">' +
-        '<button type="button" class="btn watch" data-action="watch" aria-expanded="false">\u25B6 Watch and follow</button>' +
-        '<div class="video-frame" data-video="' + esc(v.id) + '" data-title="' + esc(v.title) + '" hidden></div>' +
-        '<a class="fallback" href="https://www.youtube.com/watch?v=' + esc(v.id) + '" target="_blank" rel="noopener">Video not playing? Open it on YouTube \u2197</a>' +
-        '</div>';
+    var body;
+    if (r.workout) {
+      var open = guide[card.key] !== undefined;
+      body = renderExerciseList(card, r) +
+        '<button type="button" class="btn watch" data-action="follow" aria-expanded="' + open + '">' +
+        (open ? '✕ Close step-by-step' : '▶ Follow along step by step') + '</button>' +
+        (open ? renderGuide(card, r) : '') +
+        '<p class="mini-safety">Move at your own pace; pause whenever needed. Stop and tell an adult if anything hurts or you feel dizzy or unwell.</p>';
     } else {
-      media = '<p class="no-video">' + esc(r.noVideo) + '</p>';
-      if (r.choice === 'other') {
-        media += '<label class="other-input">What will you do?<input type="text" maxlength="60" data-field="other" value="' + esc(state.otherText[card.key] || '') + '" placeholder="e.g. dancing, bike ride, stretching"></label>';
+      body = '<p class="no-video">' + esc(r.note) + '</p>';
+      if (r.session === 'other') {
+        body += '<label class="other-input">What will you do?<input type="text" maxlength="60" data-field="other" value="' + esc(state.otherText[card.key] || '') + '" placeholder="e.g. dancing, bike ride, stretching"></label>';
       }
+      body += '<div class="how"><div><h4>How to do it</h4><ol>' + r.steps.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ol></div>' +
+        '<div class="easier"><h4>Easier options</h4><ul>' + r.easier.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ul></div></div>' +
+        '<p class="mini-safety">Pause whenever you need. Stop and tell an adult if anything hurts or you feel dizzy or unwell.</p>';
     }
-
-    var how = '<div class="how"><div><h4>How to do it</h4><ol>' + r.steps.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ol></div>' +
-      '<div class="easier"><h4>Easier options</h4><ul>' + r.easier.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ul></div></div>' +
-      '<p class="mini-safety">Pause whenever you need. Stop and tell an adult if anything hurts or you feel dizzy or unwell.</p>';
 
     var status;
     var cardCls = 'card';
@@ -430,38 +617,44 @@
       status = logSummary(e);
     } else if (e && e.status === 'rest') {
       cardCls += ' rested';
-      status = '<div class="logbox"><div class="result rest">\u263E Rest day</div><p>Resting helps your body get stronger. Nice choice.</p>' +
+      status = '<div class="logbox"><div class="result rest">☾ Rest day</div><p>Resting helps your body get stronger. Nice choice.</p>' +
         '<div class="row"><button type="button" class="btn small ghost" data-action="undo">Undo</button></div></div>';
     } else {
       status = '<div class="actions">' +
-        '<button type="button" class="btn done" data-action="open-log" data-mode="done">\u2714 Done</button>' +
-        '<button type="button" class="btn part" data-action="open-log" data-mode="part">\u25D1 Did part</button>' +
-        '<button type="button" class="btn rest" data-action="rest">\u263E Rest</button>' +
-        '<button type="button" class="btn move" data-action="open-move">\u21B7 Reschedule</button>' +
-        '</div>' + moveForm(card);
+        '<button type="button" class="btn done" data-action="open-log" data-mode="done">✔ Done</button>' +
+        '<button type="button" class="btn part" data-action="open-log" data-mode="part">◑ Did part</button>' +
+        '<button type="button" class="btn rest" data-action="rest">☾ Rest</button>' +
+        '<button type="button" class="btn move" data-action="open-move">↷ Reschedule</button>' +
+        '</div>' + moveForm();
     }
 
     return '<article class="' + cardCls + '" data-key="' + k + '">' + head +
-      '<h3>' + esc(title) + '</h3><div class="tags">' + tags + '</div>' + choices + media + how + status + logForm(card, r) +
+      '<h3>' + esc(r.title) + '</h3><div class="tags">' + tags + '</div>' + choices + body + status + logForm(r) +
       '</article>';
   }
 
+  function sessionLabel(e) {
+    if (e.session === 'A' || e.session === 'B' || e.session === 'C') return 'Week ' + e.pweek + ', Day ' + e.session;
+    if (e.session === 'flow') return 'Gentle flow';
+    if (e.session === 'other') return e.other || 'Own activity';
+    if (e.video === 'bodycoach') return 'Body Coach video';
+    if (e.video === 'nuffield') return 'Nuffield Health video';
+    return e.other || '';
+  }
+
   function logSummary(e) {
-    var label = e.status === 'done' ? '\u2714 Done' : '\u25D1 Did part';
-    var what = e.video && VIDEOS[e.video] ? VIDEOS[e.video].label + ' video' : (e.other ? e.other : '');
-    return '<div class="logbox"><div class="result ok">' + label + ' \u00B7 +' + XP_PER_SESSION + ' XP</div><dl>' +
+    var label = e.status === 'done' ? '✔ Done' : '◑ Did part';
+    var what = sessionLabel(e);
+    return '<div class="logbox"><div class="result ok">' + label + ' · +' + XP_PER_SESSION + ' XP</div><dl>' +
       (what ? '<dt>Activity</dt><dd>' + esc(what) + '</dd>' : '') +
-      '<dt>Minutes</dt><dd>' + esc(e.minutes) + (e.secondRound ? ' (incl. 2nd round)' : '') + '</dd>' +
+      '<dt>Minutes</dt><dd>' + esc(e.minutes) + '</dd>' +
       '<dt>Finished</dt><dd>' + esc(fmtDateTime(e.completedAt)) + '</dd>' +
       (e.feedback ? '<dt>Felt</dt><dd>' + esc(FEEDBACK[e.feedback]) + '</dd>' : '') +
       '</dl><div class="row"><button type="button" class="btn small" data-action="edit">Edit</button>' +
       '<button type="button" class="btn small ghost" data-action="undo">Undo</button></div></div>';
   }
 
-  function logForm(card, r) {
-    var a = ACTIVITIES[card.act];
-    var bonus = a.bonusRound
-      ? '<label class="check"><input type="checkbox" name="secondRound"> I did the optional second round</label>' : '';
+  function logForm(r) {
     var fb = ['', 'easy', 'right', 'hard'].map(function (v) {
       return '<label><input type="radio" name="feedback" value="' + v + '"' + (v === '' ? ' checked' : '') + '><span>' + (v ? FEEDBACK[v] : 'Skip') + '</span></label>';
     }).join('');
@@ -470,16 +663,15 @@
       '<fieldset><legend>How much did you do?</legend><div class="pills">' +
       '<label><input type="radio" name="status" value="done"><span>Done</span></label>' +
       '<label><input type="radio" name="status" value="part"><span>Did part</span></label></div></fieldset>' +
-      '<label class="field">Actual minutes <span class="hint">Write the real time \u2014 a short session still counts.</span>' +
+      '<label class="field">Actual minutes <span class="hint">Write the real time — a short session still counts.</span>' +
       '<input type="number" name="minutes" min="1" max="300" inputmode="numeric" required></label>' +
       '<label class="field">Finished at<input type="datetime-local" name="completedAt" required></label>' +
-      bonus +
       '<fieldset><legend>How did it feel? <span class="hint">(optional)</span></legend><div class="pills">' + fb + '</div></fieldset>' +
       '<div class="row"><button type="submit" class="btn primary">Save</button><button type="button" class="btn ghost" data-action="cancel">Cancel</button></div>' +
       '</form>';
   }
 
-  function moveForm(card) {
+  function moveForm() {
     var today = todayStr();
     return '<form class="form move-form" hidden>' +
       '<h4>Move this to another day</h4>' +
@@ -500,11 +692,37 @@
   }
 
   function render() {
+    stopTimer();
     renderPlayer();
     renderWeek();
     renderDay();
     renderBadges();
     document.getElementById('storageWarning').hidden = storageOk;
+  }
+
+  /* ---------- Timer ---------- */
+
+  var timer = null;
+  function stopTimer() { if (timer) { clearInterval(timer.id); timer = null; } }
+  function startTimer(btn, sec) {
+    if (timer && timer.btn === btn) { stopTimer(); btn.textContent = '⏱ Start again'; return; }
+    stopTimer();
+    var left = sec;
+    function show() { btn.textContent = '⏸ ' + (left >= 60 ? Math.floor(left / 60) + ':' + pad(left % 60) : left + ' s') + ' — tap to stop'; }
+    show();
+    timer = {
+      btn: btn,
+      id: setInterval(function () {
+        left--;
+        if (left <= 0) {
+          stopTimer();
+          btn.textContent = '✅ Time! Tap “Set done”';
+          if (navigator.vibrate) { try { navigator.vibrate(200); } catch (e) { /* ignore */ } }
+          return;
+        }
+        show();
+      }, 1000)
+    };
   }
 
   /* ---------- Actions ---------- */
@@ -516,21 +734,28 @@
     return cardsForDate(view.selected).filter(function (c) { return c.key === key; })[0] || null;
   }
 
-  function hideForms(art) {
-    art.querySelectorAll('form').forEach(function (f) { f.hidden = true; });
+  function rerenderCard(card) {
+    stopTimer();
+    var art = document.querySelector('article.card[data-key="' + cssEsc(card.key) + '"]');
+    if (!art) return renderDay();
+    var tmp = document.createElement('div');
+    tmp.innerHTML = renderCard(card);
+    art.replaceWith(tmp.firstChild);
   }
+  function cssEsc(s) { return window.CSS && CSS.escape ? CSS.escape(s) : s.replace(/"/g, '\\"'); }
+
+  function hideForms(art) { art.querySelectorAll('form').forEach(function (f) { f.hidden = true; }); }
 
   function openLog(art, card, mode, existing) {
     hideForms(art);
     var f = art.querySelector('.log-form');
     f.querySelectorAll('input[name="status"]').forEach(function (r) { r.checked = r.value === mode; });
-    f.querySelector('.form-title').textContent = existing ? 'Edit your session' : mode === 'done' ? 'Great \u2014 log your session' : 'Nice \u2014 every bit counts';
+    f.querySelector('.form-title').textContent = existing ? 'Edit your session' : mode === 'done' ? 'Great — log your session' : 'Nice — every bit counts';
     var min = f.elements.minutes;
     var when = f.elements.completedAt;
     if (existing) {
       min.value = existing.minutes || '';
       when.value = existing.completedAt || nowLocalInput(card.date);
-      if (f.elements.secondRound) f.elements.secondRound.checked = !!existing.secondRound;
       var fbv = existing.feedback || '';
       f.querySelectorAll('input[name="feedback"]').forEach(function (r) { r.checked = r.value === fbv; });
     } else {
@@ -555,30 +780,33 @@
     var entry = {
       date: card.date, act: card.act, status: mode, minutes: minutes, completedAt: completedAt,
       feedback: fbEl && fbEl.value ? fbEl.value : null,
-      video: r.video ? r.choice : (r.choice === 'other' ? 'other' : null),
-      other: r.choice === 'other' ? (state.otherText[card.key] || 'Own activity') : null,
-      secondRound: !!(form.elements.secondRound && form.elements.secondRound.checked && r.choice === 'bodycoach'),
+      session: r.session, pweek: r.session ? r.pweek : null,
+      other: r.session === 'other' ? (state.otherText[card.key] || 'Own activity') : null,
       movedFrom: card.movedFrom || (prev && prev.movedFrom) || null
     };
-    // Editing keeps the original activity choice
-    if (wasCounted && prev) { entry.video = prev.video; entry.other = prev.other; }
+    if (wasCounted && prev) { // editing keeps what was originally logged
+      ['session', 'pweek', 'other', 'video'].forEach(function (f) { if (prev[f] !== undefined) entry[f] = prev[f]; });
+    }
     var before = earnedBadges();
     state.entries[card.key] = entry;
     save();
     var after = earnedBadges();
     var newBadge = BADGES.filter(function (b) { return after[b.id] && !before[b.id]; })[0];
+    delete guide[card.key];
     render();
     if (wasCounted) toast('Updated.');
-    else if (newBadge) toast('+10 XP \u2014 new badge: ' + newBadge.name + '!');
-    else toast(mode === 'done' ? '+10 XP \u2014 great work!' : '+10 XP \u2014 every bit counts!');
+    else if (newBadge) toast('+10 XP — new badge: ' + newBadge.name + '!');
+    else toast(mode === 'done' ? '+10 XP — great work!' : '+10 XP — every bit counts!');
   }
 
   function saveMove(form, card) {
     var to = form.elements.to.value;
     if (!to) { toast('Pick a day.'); return; }
-    if (to === card.date) { toast('That\u2019s the same day \u2014 pick another.'); return; }
-    if (ACT_BY_WEEKDAY[weekdayOf(to)] === card.act) { toast('That day already has this activity \u2014 pick another.'); return; }
-    if (state.entries[to + '|' + card.act]) { toast('That day already has this activity \u2014 pick another.'); return; }
+    if (to === card.date) { toast('That’s the same day — pick another.'); return; }
+    if (ACT_BY_WEEKDAY[weekdayOf(to)] === card.act || state.entries[to + '|' + card.act]) { toast('That day already has this activity — pick another.'); return; }
+    // carry the chosen option (e.g. Day A) to the new day
+    var ch = state.choices[card.key];
+    if (ch) state.choices[to + '|' + card.act] = ch;
     state.entries[card.key] = { date: card.date, act: card.act, status: 'rescheduled', to: to, movedFrom: card.movedFrom || null };
     save();
     render();
@@ -588,10 +816,7 @@
   function undo(card) {
     var e = state.entries[card.key];
     if (!e) return;
-    if (e.status === 'rescheduled') {
-      var target = state.entries[e.to + '|' + card.act];
-      if (target) { toast('Undo the session on ' + fmtShort(e.to) + ' first.'); return; }
-    }
+    if (e.status === 'rescheduled' && state.entries[e.to + '|' + card.act]) { toast('Undo the session on ' + fmtShort(e.to) + ' first.'); return; }
     if (isParticipation(e) && !confirm('Undo this session? Its 10 XP will be removed.')) return;
     delete state.entries[card.key];
     save();
@@ -600,7 +825,7 @@
   }
 
   function exportData() {
-    var payload = { app: 'move-quest', version: 1, exportedAt: new Date().toISOString(), data: state };
+    var payload = { app: 'move-quest', version: 2, exportedAt: new Date().toISOString(), data: state };
     var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
     var url = URL.createObjectURL(blob);
     var a = document.createElement('a');
@@ -621,7 +846,7 @@
         parsed = JSON.parse(reader.result);
         data = normalise(parsed && parsed.data ? parsed.data : parsed);
       } catch (e) { data = null; }
-      if (!data) { alert('That file doesn\u2019t look like a Move Quest progress file.'); return; }
+      if (!data) { alert('That file doesn’t look like a Move Quest progress file.'); return; }
       var n = Object.keys(data.entries).length;
       if (!confirm('Replace the progress on this device with the imported file (' + n + ' log entries)?')) return;
       state = data;
@@ -634,33 +859,13 @@
   }
 
   function resetAll() {
-    if (!confirm('Reset everything? This deletes all logged sessions, XP, badges and planned times on this device. Export first if you want a backup.')) return;
+    if (!confirm('Reset everything? This deletes all logged sessions, XP, badges, planned times and programme progress on this device. Export first if you want a backup.')) return;
     if (!confirm('Are you sure? This cannot be undone.')) return;
     state = emptyState();
+    guide = {};
     save();
     render();
     toast('Everything reset.');
-  }
-
-  function openVideo(btn) {
-    var box = btn.closest('.video-box');
-    var frame = box.querySelector('.video-frame');
-    var open = frame.hidden;
-    if (open && !frame.querySelector('iframe')) {
-      var id = frame.getAttribute('data-video');
-      var ifr = document.createElement('iframe');
-      ifr.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(id) + '?rel=0&playsinline=1';
-      ifr.title = frame.getAttribute('data-title') || 'Workout video';
-      ifr.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-      ifr.allowFullscreen = true;
-      ifr.referrerPolicy = 'strict-origin-when-cross-origin';
-      ifr.loading = 'lazy';
-      frame.appendChild(ifr);
-    }
-    frame.hidden = !open;
-    btn.setAttribute('aria-expanded', String(open));
-    btn.textContent = open ? '\u2715 Hide video' : '\u25B6 Watch and follow';
-    if (open) frame.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
   function selectDate(d) {
@@ -669,12 +874,15 @@
     render();
   }
 
+  function setsFor(card) { return state.sets[card.key] || (state.sets[card.key] = {}); }
+
   document.addEventListener('click', function (ev) {
     var btn = ev.target.closest('[data-action]');
-    if (!btn) return;
+    if (!btn || btn.disabled) return;
     var action = btn.getAttribute('data-action');
     var art = btn.closest('article.card');
     var card = art ? cardFromEl(btn) : null;
+    var r, idx;
 
     switch (action) {
       case 'prev-week': view.weekStart = addDays(view.weekStart, -7); view.selected = view.weekStart; render(); break;
@@ -682,9 +890,38 @@
       case 'go-today': selectDate(todayStr()); break;
       case 'select-day': selectDate(btn.getAttribute('data-date')); break;
       case 'goto': selectDate(btn.getAttribute('data-date')); document.getElementById('day').focus(); break;
-      case 'watch': openVideo(btn); break;
+      case 'set-pweek':
+        state.programWeeks[view.weekStart] = Number(btn.getAttribute('data-week'));
+        save(); render(); toast('This week uses programme Week ' + btn.getAttribute('data-week') + '.');
+        break;
       case 'choose':
-        if (card) { state.choices[card.key] = btn.getAttribute('data-choice'); save(); renderDay(); }
+        if (card) { state.choices[card.key] = btn.getAttribute('data-choice'); delete guide[card.key]; save(); rerenderCard(card); }
+        break;
+      case 'follow':
+        if (card) {
+          if (guide[card.key] === undefined) guide[card.key] = 0; else delete guide[card.key];
+          rerenderCard(card);
+          var g = document.querySelector('article.card[data-key="' + cssEsc(card.key) + '"] .guide');
+          if (g) g.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        break;
+      case 'g-timer': startTimer(btn, Number(btn.getAttribute('data-sec'))); break;
+      case 'g-set':
+        if (card) {
+          r = resolve(card); idx = guide[card.key] || 0;
+          var item = r.items[idx];
+          var s = setsFor(card);
+          s[idx] = Math.min((s[idx] || 0) + 1, item.sets);
+          if (s[idx] >= item.sets) guide[card.key] = idx + 1;
+          save(); rerenderCard(card);
+        }
+        break;
+      case 'g-skip':
+      case 'g-next':
+        if (card) { r = resolve(card); guide[card.key] = Math.min((guide[card.key] || 0) + 1, r.items.length); rerenderCard(card); }
+        break;
+      case 'g-prev':
+        if (card) { guide[card.key] = Math.max((guide[card.key] || 0) - 1, 0); rerenderCard(card); }
         break;
       case 'open-log': if (card) openLog(art, card, btn.getAttribute('data-mode')); break;
       case 'edit':
@@ -697,7 +934,8 @@
       case 'rest':
         if (card) {
           state.entries[card.key] = { date: card.date, act: card.act, status: 'rest', movedFrom: card.movedFrom || null, completedAt: nowLocalInput(card.date) };
-          save(); render(); toast('Rest logged \u2014 recharging counts.');
+          delete guide[card.key];
+          save(); render(); toast('Rest logged — recharging counts.');
         }
         break;
       case 'undo': if (card) undo(card); break;
@@ -722,6 +960,14 @@
       if (el.value) state.plannedTimes[wd] = el.value; else delete state.plannedTimes[wd];
       save();
       toast(el.value ? DAY_NAMES[wd] + 's planned for ' + el.value + '.' : 'Planned time cleared.');
+    } else if (el.matches('input[data-field="pick"]')) {
+      var card = cardFromEl(el);
+      if (!card) return;
+      var picks = (state.picks[card.key] || []).filter(function (id) { return id !== el.value; });
+      if (el.checked && picks.length < 5) picks.push(el.value);
+      state.picks[card.key] = picks;
+      state.sets[card.key] = {};
+      save(); rerenderCard(card);
     } else if (el.id === 'importFile' && el.files && el.files[0]) {
       importData(el.files[0]);
       el.value = '';
@@ -743,9 +989,10 @@
     if (t !== lastToday) {
       if (view.selected === lastToday) { view.selected = t; view.weekStart = weekStartOf(t); }
       lastToday = t;
-      render();
+      if (!timer) render();
     }
   }, 60000);
 
+  save(); // stores programStart on first visit
   render();
 })();
