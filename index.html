@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Move Quest</title>
+  <meta name="description" content="A weekly indoor activity plan with follow-along videos, check-ins and XP.">
+  <meta name="theme-color" content="#0f1629">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%2339d98a'/%3E%3Cpath d='M56 12 26 56h20l-6 32 34-46H54z' fill='%230f1629'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip" href="#day">Skip to today's mission</a>
+
+  <header class="top">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">⚡</span>
+      <div>
+        <h1>Move Quest</h1>
+        <p class="tagline">Your weekly movement missions</p>
+      </div>
+    </div>
+    <div class="player" id="player" aria-live="polite"></div>
+  </header>
+
+  <aside class="safety" aria-label="Safety">
+    <p class="safety-main">Move at your own pace; pause whenever needed.</p>
+    <ul>
+      <li><strong>Stop</strong> if anything hurts, or if you feel dizzy or unwell — and tell an adult.</li>
+      <li>Have an <strong>adult nearby</strong> for any move you haven't tried before.</li>
+      <li>Clear space, non-slip floor, water nearby. No weights, no balancing on balls, no lifting other people.</li>
+    </ul>
+  </aside>
+
+  <main>
+    <section class="panel week" aria-labelledby="week-h">
+      <div class="week-head">
+        <h2 id="week-h">Week</h2>
+        <div class="week-nav">
+          <button type="button" class="btn ghost small" data-action="prev-week" aria-label="Previous week">‹</button>
+          <span id="weekLabel" class="week-label"></span>
+          <button type="button" class="btn ghost small" data-action="next-week" aria-label="Next week">›</button>
+          <button type="button" class="btn ghost small" data-action="go-today">Today</button>
+        </div>
+      </div>
+      <ol class="strip" id="strip"></ol>
+      <p class="week-summary" id="weekSummary"></p>
+    </section>
+
+    <section class="day" id="day" aria-labelledby="dayTitle" tabindex="-1">
+      <h2 id="dayTitle" class="day-title"></h2>
+      <div id="cards"></div>
+    </section>
+
+    <section class="panel" aria-labelledby="badges-h">
+      <h2 id="badges-h">Badges</h2>
+      <p class="muted">Earned by showing up. Rest days never take anything away.</p>
+      <div id="badges" class="badge-grid"></div>
+    </section>
+
+    <section class="panel" aria-labelledby="data-h">
+      <h2 id="data-h">Your progress file</h2>
+      <p>Progress is saved <strong>only in this browser on this device</strong>. It does <strong>not</strong> sync automatically between phones, tablets or computers, and clearing browser data will delete it.</p>
+      <p class="muted">To move progress to another device: press <em>Export</em> here, send the file across, then press <em>Import</em> on the other device.</p>
+      <p id="storageWarning" class="warning" hidden>This browser is blocking storage, so progress will be lost when the page closes. Use Export to keep a copy.</p>
+      <div class="row">
+        <button type="button" class="btn" data-action="export">Export progress (JSON)</button>
+        <label class="btn">
+          Import progress
+          <input type="file" id="importFile" accept="application/json,.json" class="visually-hidden">
+        </label>
+        <button type="button" class="btn danger" data-action="reset">Reset everything…</button>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="about-h">
+      <h2 id="about-h">For grown-ups</h2>
+      <ul>
+        <li>These are <strong>starter home sessions</strong>, not the whole day's activity. Play, walking, cycling, sport and active travel all count towards the daily total.</li>
+        <li>Any participation earns 10 XP — a full, adapted or partial session — once per activity per day.</li>
+        <li>There are no weight, calorie or appearance goals, no leaderboards and no streaks to lose. Rest days are shown as rest, never as a miss.</li>
+        <li>Planned times are blank until you set them; tap a time on any card to fill it in.</li>
+        <li>Check the video yourself first and stay nearby for unfamiliar movements.</li>
+      </ul>
+    </section>
+
+    <section class="panel sources" aria-labelledby="sources-h">
+      <h2 id="sources-h">Sources</h2>
+      <ul>
+        <li><a href="https://www.youtube.com/watch?v=d3LPrhI0v-w" target="_blank" rel="noopener">The Body Coach TV — 5 Minute Move, Kids Workout 1 (YouTube)</a></li>
+        <li><a href="https://www.youtube.com/watch?v=aHVR2FnTpdk" target="_blank" rel="noopener">Nuffield Health — kids' workout video (YouTube)</a></li>
+        <li><a href="https://www.nuffieldhealth.com/article/at-home-workouts-for-kids" target="_blank" rel="noopener">Nuffield Health — At-home workouts for kids</a></li>
+        <li><a href="https://www.nhs.uk/live-well/exercise/physical-activity-guidelines-children-and-young-people/" target="_blank" rel="noopener">NHS — Physical activity guidelines for children and young people</a></li>
+        <li><a href="https://www.gov.uk/government/publications/physical-activity-guidelines-uk-chief-medical-officers-report" target="_blank" rel="noopener">UK Chief Medical Officers' physical activity guidelines (2019)</a></li>
+        <li><a href="https://www.who.int/news-room/fact-sheets/detail/physical-activity" target="_blank" rel="noopener">World Health Organization — Physical activity fact sheet</a></li>
+      </ul>
+      <p class="muted">Videos belong to their creators and are embedded with YouTube's standard player. This site is not affiliated with either channel.</p>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p>Move Quest · runs entirely in your browser · no account, no tracking</p>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
