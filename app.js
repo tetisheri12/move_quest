@@ -178,18 +178,18 @@
   var FEEDBACK = { easy: 'Easy', right: 'About right', hard: 'Too hard' };
 
   var BADGES = [
-    { id: 'first', icon: '🚀', name: 'Lift-off', desc: 'Do your first session' },
-    { id: 'part', icon: '🧩', name: 'Every Bit Counts', desc: 'Do part of a session' },
-    { id: 'trio', icon: '🔺', name: 'A-B-C', desc: 'Day A, B and C in one week' },
-    { id: 'flow', icon: '🧘', name: 'Flow Finder', desc: 'Do a Down Dog flow' },
-    { id: 'splash', icon: '🌊', name: 'Splash', desc: 'Log a swim' },
-    { id: 'team', icon: '🏅', name: 'Team Player', desc: 'Log school sport' },
-    { id: 'explorer', icon: '🧭', name: 'Explorer', desc: 'Do your own activity' },
-    { id: 'recharge', icon: '🌙', name: 'Recharge', desc: 'Take a rest day' },
-    { id: 'voice', icon: '💬', name: 'Coach’s Ear', desc: 'Give feedback 3 times' },
-    { id: 'flex', icon: '🔀', name: 'Flex Planner', desc: 'Finish a moved session' },
-    { id: 'week3', icon: '⭐', name: 'Busy Week', desc: '3 sessions in one week' },
-    { id: 'finisher', icon: '🏆', name: 'Show-Off Day', desc: 'Finish Week 4, Day C' }
+    { id: 'first', icon: 'rocket', name: 'Lift-off', desc: 'Do your first session' },
+    { id: 'part', icon: 'puzzle', name: 'Every Bit Counts', desc: 'Do part of a session' },
+    { id: 'trio', icon: 'trio', name: 'A-B-C', desc: 'Day A, B and C in one week' },
+    { id: 'flow', icon: 'leaf', name: 'Flow Finder', desc: 'Do a Down Dog flow' },
+    { id: 'splash', icon: 'drop', name: 'Splash', desc: 'Log a swim' },
+    { id: 'team', icon: 'medal', name: 'Team Player', desc: 'Log school sport' },
+    { id: 'explorer', icon: 'compass', name: 'Explorer', desc: 'Do your own activity' },
+    { id: 'recharge', icon: 'moon', name: 'Recharge', desc: 'Take a rest day' },
+    { id: 'voice', icon: 'bubble', name: 'Coach’s Ear', desc: 'Give feedback 3 times' },
+    { id: 'flex', icon: 'calendar', name: 'Flex Planner', desc: 'Finish a moved session' },
+    { id: 'week3', icon: 'star', name: 'Busy Week', desc: '3 sessions in one week' },
+    { id: 'finisher', icon: 'trophy', name: 'Show-Off Day', desc: 'Finish Week 4, Day C' }
   ];
 
   /* ---------- Dates (local time, YYYY-MM-DD) ---------- */
@@ -374,6 +374,7 @@
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
     });
   }
+  function ico(name, size) { return '<i class="ico ' + (size || '') + ' i-' + name + '" aria-hidden="true"></i>'; }
   function $(sel, root) { return (root || document).querySelector(sel); }
 
   var toastTimer;
@@ -440,7 +441,7 @@
     var into = xp % XP_PER_LEVEL;
     var pct = Math.round(into / XP_PER_LEVEL * 100);
     $('#player').innerHTML =
-      '<div class="player-top"><span class="level">Level ' + level + '</span><span class="xp-total">' + xp + ' XP total</span></div>' +
+      '<div class="player-top"><span class="level">' + ico('gem', 'sm') + 'Level ' + level + '</span><span class="xp-total">' + xp + ' XP total</span></div>' +
       '<div class="bar" role="progressbar" aria-label="Progress to next level" aria-valuemin="0" aria-valuemax="' + XP_PER_LEVEL + '" aria-valuenow="' + into + '"><span style="width:' + pct + '%"></span></div>' +
       '<p class="bar-caption">' + (XP_PER_LEVEL - into) + ' XP to Level ' + (level + 1) + '</p>';
   }
@@ -450,7 +451,7 @@
     $('#weekLabel').textContent = parseYmd(start).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) +
       ' – ' + parseYmd(addDays(start, 6)).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
     var today = todayStr();
-    var icons = { done: '★', rest: '☾', restday: '☾', moved: '↷', today: '▶', planned: '•', open: '–' };
+    var icons = { done: 'star', rest: 'moon', restday: 'moon', moved: 'move', today: 'play', planned: 'dot', open: 'dash' };
     var words = { done: 'took part', rest: 'rest day', restday: 'rest day', moved: 'moved', today: 'today', planned: 'coming up', open: 'not logged' };
     var html = '';
     for (var i = 0; i < 7; i++) {
@@ -464,7 +465,7 @@
         ' aria-label="' + esc(fmtLong(d) + ', ' + words[st]) + '">' +
         '<span class="d-name">' + DAY_SHORT[i] + '</span>' +
         '<span class="d-date">' + parseYmd(d).getDate() + '</span>' +
-        '<span class="d-icon" aria-hidden="true">' + icons[st] + '</span></button></li>';
+        '<i class="ico d-icon i-' + icons[st] + '" aria-hidden="true"></i></button></li>';
     }
     $('#strip').innerHTML = html;
 
@@ -530,7 +531,7 @@
     if (!items.length) return '<div class="guide"><p>Pick your 5 exercises first.</p></div>';
     var idx = Math.min(guide[card.key] || 0, items.length);
     if (idx >= items.length) {
-      return '<div class="guide finished"><p class="g-big">🎉 All done!</p><p>Press <strong>Done</strong> to get your XP.</p>' +
+      return '<div class="guide finished"><p class="g-big">' + ico('trophy', 'lg') + 'All done!</p><p>Press <strong>Done</strong> to get your XP.</p>' +
         '<div class="row"><button type="button" class="btn small ghost" data-action="g-prev">‹ Back</button></div></div>';
     }
     var i = items[idx];
@@ -538,7 +539,7 @@
     var n = (state.sets[card.key] || {})[idx] || 0;
     var setWord = i.unit === 'min' ? '' : 'Set ' + Math.min(n + 1, i.sets) + ' of ' + i.sets;
     var timer = (i.unit === 'sec' || i.unit === 'min')
-      ? '<button type="button" class="btn timer" data-action="g-timer" data-sec="' + (i.unit === 'min' ? i.amount * 60 : i.amount) + '">⏱ Start ' + (i.unit === 'min' ? i.amount + ' min' : i.amount + ' sec') + ' timer</button>' : '';
+      ? '<button type="button" class="btn timer" data-action="g-timer" data-sec="' + (i.unit === 'min' ? i.amount * 60 : i.amount) + '">' + ico('hourglass') + 'Start ' + (i.unit === 'min' ? i.amount + ' min' : i.amount + ' sec') + ' timer</button>' : '';
     var adult = ex.adult ? '<p class="flag adult big">Only with an adult in the room. Feet stay on the floor.</p>' : '';
     return '<div class="guide" aria-live="polite">' +
       '<p class="g-count">Exercise ' + (idx + 1) + ' of ' + items.length + '</p>' +
@@ -548,7 +549,7 @@
       '<p class="g-easier"><strong>Easier:</strong> ' + esc(ex.easier) + '</p>' +
       '<p class="g-sets">' + dots(n, i.sets) + '</p>' +
       '<div class="row g-controls">' + timer +
-      '<button type="button" class="btn primary" data-action="g-set"' + (n >= i.sets ? ' disabled' : '') + '>✔ ' + (i.unit === 'min' ? 'Finished' : 'Set done') + '</button>' +
+      '<button type="button" class="btn primary" data-action="g-set"' + (n >= i.sets ? ' disabled' : '') + '>' + ico('check') + (i.unit === 'min' ? 'Finished' : 'Set done') + '</button>' +
       '<button type="button" class="btn ghost" data-action="g-skip">Skip</button></div>' +
       '<div class="row"><button type="button" class="btn small ghost" data-action="g-prev"' + (idx === 0 ? ' disabled' : '') + '>‹ Back</button>' +
       '<button type="button" class="btn small" data-action="g-next">Next exercise ›</button></div>' +
@@ -571,13 +572,13 @@
       var rr = resolve(card);
       return '<article class="card moved-out" data-key="' + k + '">' + head +
         '<h3>' + esc(rr.title) + '</h3>' +
-        '<div class="logbox"><div class="result moved">↷ Moved to ' + esc(fmtShort(e.to)) + '</div>' +
+        '<div class="logbox"><div class="result moved">' + ico('move') + 'Moved to ' + esc(fmtShort(e.to)) + '</div>' +
         '<div class="row"><button type="button" class="btn small" data-action="goto" data-date="' + esc(e.to) + '">Go to ' + esc(fmtShort(e.to)) + '</button>' +
         '<button type="button" class="btn small ghost" data-action="undo">Undo move</button></div></div></article>';
     }
 
     var r = resolve(card);
-    var tags = '<span class="tag">⏱ ' + esc(r.duration) + '</span><span class="tag">🎒 ' + esc(r.equipment) + '</span>';
+    var tags = '<span class="tag">' + ico('hourglass') + esc(r.duration) + '</span><span class="tag">' + ico('bag') + esc(r.equipment) + '</span>';
     if (r.workout && r.session !== 'flow') tags += '<span class="tag week">Week ' + r.pweek + ' · ' + esc(WEEKS[r.pweek].theme) + '</span>';
     if (a.optional) tags += '<span class="tag opt">Optional</span>';
     if (card.movedFrom) tags += '<span class="tag moved">Moved from ' + esc(fmtShort(card.movedFrom)) + '</span>';
@@ -594,7 +595,7 @@
       var open = guide[card.key] !== undefined;
       body = renderExerciseList(card, r) +
         '<button type="button" class="btn watch" data-action="follow" aria-expanded="' + open + '">' +
-        (open ? '✕ Close' : '▶ Start workout') + '</button>' +
+        (open ? ico('cross') + 'Close' : ico('play') + 'Start workout') + '</button>' +
         (open ? renderGuide(card, r) : '');
     } else {
       body = '<p class="no-video">' + esc(r.note) + '</p>';
@@ -612,14 +613,14 @@
       status = logSummary(e);
     } else if (e && e.status === 'rest') {
       cardCls += ' rested';
-      status = '<div class="logbox"><div class="result rest">☾ Rest day — recharging!</div>' +
+      status = '<div class="logbox"><div class="result rest">' + ico('moon') + 'Rest day — recharging!</div>' +
         '<div class="row"><button type="button" class="btn small ghost" data-action="undo">Undo</button></div></div>';
     } else {
       status = '<div class="actions">' +
-        '<button type="button" class="btn done" data-action="open-log" data-mode="done">✔ Done</button>' +
-        '<button type="button" class="btn part" data-action="open-log" data-mode="part">½ Did part</button>' +
-        '<button type="button" class="btn rest" data-action="rest">☾ Rest</button>' +
-        '<button type="button" class="btn move" data-action="open-move">↷ Reschedule</button>' +
+        '<button type="button" class="btn done" data-action="open-log" data-mode="done">' + ico('check') + 'Done</button>' +
+        '<button type="button" class="btn part" data-action="open-log" data-mode="part">' + ico('half') + 'Did part</button>' +
+        '<button type="button" class="btn rest" data-action="rest">' + ico('moon') + 'Rest</button>' +
+        '<button type="button" class="btn move" data-action="open-move">' + ico('move') + 'Reschedule</button>' +
         '</div>' + moveForm();
     }
 
@@ -638,7 +639,7 @@
   }
 
   function logSummary(e) {
-    var label = e.status === 'done' ? '✔ Done' : '½ Did part';
+    var label = e.status === 'done' ? ico('check') + 'Done' : ico('half') + 'Did part';
     var what = sessionLabel(e);
     return '<div class="logbox"><div class="result ok">' + label + ' · +' + XP_PER_SESSION + ' XP</div><dl>' +
       (what ? '<dt>Activity</dt><dd>' + esc(what) + '</dd>' : '') +
@@ -680,7 +681,7 @@
     var got = earnedBadges();
     $('#badges').innerHTML = BADGES.map(function (b) {
       var on = got[b.id];
-      return '<div class="badge ' + (on ? 'earned' : 'locked') + '"><span class="b-icon" aria-hidden="true">' + b.icon + '</span>' +
+      return '<div class="badge ' + (on ? 'earned' : 'locked') + '"><span class="b-icon i-' + b.icon + '" aria-hidden="true"></span>' +
         '<span class="b-name">' + esc(b.name) + '</span><span class="b-desc">' + esc(b.desc) + '</span>' +
         (on ? '<span class="b-state">Earned!</span>' : '') + '</div>';
     }).join('');
@@ -700,10 +701,10 @@
   var timer = null;
   function stopTimer() { if (timer) { clearInterval(timer.id); timer = null; } }
   function startTimer(btn, sec) {
-    if (timer && timer.btn === btn) { stopTimer(); btn.textContent = '⏱ Start again'; return; }
+    if (timer && timer.btn === btn) { stopTimer(); btn.innerHTML = ico('hourglass') + 'Start again'; return; }
     stopTimer();
     var left = sec;
-    function show() { btn.textContent = '⏸ ' + (left >= 60 ? Math.floor(left / 60) + ':' + pad(left % 60) : left + ' s') + ' — tap to stop'; }
+    function show() { btn.innerHTML = ico('pause') + (left >= 60 ? Math.floor(left / 60) + ':' + pad(left % 60) : left + ' s') + ' — tap to stop'; }
     show();
     timer = {
       btn: btn,
@@ -711,7 +712,7 @@
         left--;
         if (left <= 0) {
           stopTimer();
-          btn.textContent = '✅ Time! Tap “Set done”';
+          btn.innerHTML = ico('check') + 'Time! Tap “Set done”';
           if (navigator.vibrate) { try { navigator.vibrate(200); } catch (e) { /* ignore */ } }
           return;
         }

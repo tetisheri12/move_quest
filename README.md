@@ -9,9 +9,10 @@ index.html   page structure, safety notice, sources
 styles.css   layout and theme (responsive, phone-first)
 app.js       schedule, 4-week programme, logging, XP, badges, export/import
 apple-touch-icon.png, favicon.png   app icons
+tex/         original 16x16 texture pack: block textures, frames, item icons
 ```
 
-Blocky pixel-adventure look (pixel font "Pixelify Sans" from Google Fonts, falls back to system fonts offline). Laid out for an 11" iPad: two columns in landscape, one in portrait. Grown-up items (progress file, notes, sources) sit in a collapsed "For grown-ups" section.
+Texture-pack look built from an original set of 16×16 pixel textures and icons in `tex/` (drawn for this site; no game assets). Pixel font "Pixelify Sans" from Google Fonts, falling back to system fonts offline. Laid out for an 11" iPad: two columns in landscape, one in portrait. Grown-up items (progress file, notes, sources) sit in a collapsed "For grown-ups" section.
 
 **iPad:** open the site in Safari → Share → *Add to Home Screen*. It then opens full-screen like an app. Progress is stored per browser, so keep using the same home-screen icon.
 
@@ -46,6 +47,16 @@ Each workout card lists the exercises with set dots, and **Follow along step by 
 - Planned times start blank — set them on any card.
 - Progress is stored in the browser's `localStorage` **on that device only**. It does not sync. Use **Export** / **Import** (JSON) to move it, and **Reset** (double confirmation) to clear it.
 
+## Publish on GitHub Pages
+
+1. Sign in to GitHub and create a new repository, e.g. `move-quest` (Public, or Private on a paid plan).
+2. Click **Add file → Upload files**, drag in all files **and the `tex` folder** (`index.html`, `styles.css`, `app.js`, `README.md`, `apple-touch-icon.png`, `favicon.png`, `tex/`). Dragging a whole folder works in Chrome, Edge and Safari; check that `tex/` shows up in the repo afterwards, then **Commit changes**. Keep them at the top level of the repository, not inside a folder.
+3. Go to **Settings → Pages**.
+4. Under **Build and deployment**, set **Source** to **Deploy from a branch**, branch **main**, folder **/ (root)**, then **Save**.
+5. Wait a minute or two and refresh. The address appears at the top of the Pages screen, usually `https://<your-username>.github.io/move-quest/`.
+6. Open it on the child's device and bookmark it / add it to the home screen.
+
+To update later, upload the changed file again and commit; Pages redeploys automatically.
 
 ### Notes
 
