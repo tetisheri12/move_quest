@@ -32,22 +32,6 @@ These are starter home sessions, not the whole day's activity target.
 - Planned times start blank — set them on any card.
 - Progress is stored in the browser's `localStorage` **on that device only**. It does not sync. Use **Export** / **Import** (JSON) to move it, and **Reset** (double confirmation) to clear it.
 
-## Publish on GitHub Pages
-
-1. Sign in to GitHub and create a new repository, e.g. `move-quest` (Public, or Private on a paid plan).
-2. Click **Add file → Upload files**, drag in `index.html`, `styles.css`, `app.js` and `README.md`, then **Commit changes**. Keep them at the top level of the repository, not inside a folder.
-3. Go to **Settings → Pages**.
-4. Under **Build and deployment**, set **Source** to **Deploy from a branch**, branch **main**, folder **/ (root)**, then **Save**.
-5. Wait a minute or two and refresh. The address appears at the top of the Pages screen, usually `https://<your-username>.github.io/move-quest/`.
-6. Open it on the child's device and bookmark it / add it to the home screen.
-
-To update later, upload the changed file again and commit; Pages redeploys automatically.
-
-### Notes
-
-- Open the site through GitHub Pages (or any `http(s)://` address). Opening `index.html` directly from disk (`file://`) can stop YouTube embeds from playing — the "Open it on YouTube" link still works.
-- Some school or family networks block YouTube embeds; the fallback link covers that.
-- Progress on `github.io` is tied to that exact address. If you rename the repository, export first and import after.
 
 ## Sources
 
