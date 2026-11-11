@@ -144,8 +144,8 @@
   var GENTLE = { title: 'Gentle flow', items: [it('flow', 1, 5, 'min'), it('stork', 1, 3, 'reps', 'leg')] };
 
   var OTHER_IDEAS = {
-    sat: ['Dance to a few favourite songs', 'Bike ride or scooter with an adult', 'Football, tag or the playground', 'Obstacle course with cushions on the floor'],
-    sun: ['Gentle stretches', 'A walk outside with family', 'Slow dance to a calm song', 'Or simply rest — that counts too']
+    sat: ['Dance to your favourite songs', 'Bike or scooter ride', 'Football, tag or the playground', 'Cushion obstacle course'],
+    sun: ['Gentle stretches', 'A walk outside', 'Slow dance to a calm song']
   };
 
   // weekday: 0 = Monday ... 6 = Sunday. options: A/B/C (programme days), flow, other
@@ -155,17 +155,17 @@
       weekday: 1, kind: 'session', name: 'Swimming',
       duration: 'About 60 min', minutes: 60,
       equipment: 'Swimsuit, goggles, towel, water bottle',
-      note: 'No home workout today — this is your usual swimming session.',
-      steps: ['Go to your usual swimming session.', 'Follow your coach or teacher.', 'Afterwards, log the real time you swam.'],
-      easier: ['Rest at the wall whenever you need to.', 'Tell the coach if anything hurts.', 'Did a shorter swim? Press Did part.']
+      note: 'Swimming day! No home workout.',
+      steps: ['Swim with your coach.', 'Log how long you swam.'],
+      easier: ['Rest at the wall when you need to.']
     },
     wed: {
       weekday: 2, kind: 'session', name: 'School sport',
-      duration: 'Varies — record the actual time', minutes: null,
+      duration: 'Log the real time', minutes: null,
       equipment: 'PE kit, trainers, water bottle',
-      note: 'No home workout today — this is your school sport session.',
-      steps: ['Take part in sport at school.', 'When you get home, write down how long it really lasted.', 'Press Done (or Did part if you sat some out).'],
-      easier: ['Ask the teacher for an easier version.', 'Take water breaks.', 'Tell the teacher if anything hurts.']
+      note: 'School sport day! No home workout.',
+      steps: ['Do sport at school.', 'Log how long it really lasted.'],
+      easier: ['Ask the teacher for an easier version.']
     },
     thu: { weekday: 3, kind: 'choice', options: ['B'] },
     fri: { weekday: 4, kind: 'choice', options: ['C', 'A', 'B'] },
@@ -178,17 +178,17 @@
   var FEEDBACK = { easy: 'Easy', right: 'About right', hard: 'Too hard' };
 
   var BADGES = [
-    { id: 'first', icon: '🚀', name: 'Lift-off', desc: 'Take part in your first session' },
-    { id: 'part', icon: '🧩', name: 'Every Bit Counts', desc: 'Log a "Did part" session' },
-    { id: 'trio', icon: '🔺', name: 'A-B-C', desc: 'Do Day A, B and C in one week' },
-    { id: 'flow', icon: '🧘', name: 'Flow Finder', desc: 'Do a Down Dog flow session' },
-    { id: 'splash', icon: '🌊', name: 'Splash', desc: 'Log a swimming session' },
+    { id: 'first', icon: '🚀', name: 'Lift-off', desc: 'Do your first session' },
+    { id: 'part', icon: '🧩', name: 'Every Bit Counts', desc: 'Do part of a session' },
+    { id: 'trio', icon: '🔺', name: 'A-B-C', desc: 'Day A, B and C in one week' },
+    { id: 'flow', icon: '🧘', name: 'Flow Finder', desc: 'Do a Down Dog flow' },
+    { id: 'splash', icon: '🌊', name: 'Splash', desc: 'Log a swim' },
     { id: 'team', icon: '🏅', name: 'Team Player', desc: 'Log school sport' },
-    { id: 'explorer', icon: '🧭', name: 'Explorer', desc: 'Log your own fun activity' },
-    { id: 'recharge', icon: '🌙', name: 'Recharge', desc: 'Log a rest day — rest is part of training' },
+    { id: 'explorer', icon: '🧭', name: 'Explorer', desc: 'Do your own activity' },
+    { id: 'recharge', icon: '🌙', name: 'Recharge', desc: 'Take a rest day' },
     { id: 'voice', icon: '💬', name: 'Coach’s Ear', desc: 'Give feedback 3 times' },
-    { id: 'flex', icon: '🔀', name: 'Flex Planner', desc: 'Finish a rescheduled session' },
-    { id: 'week3', icon: '⭐', name: 'Busy Week', desc: 'Take part 3 times in one week' },
+    { id: 'flex', icon: '🔀', name: 'Flex Planner', desc: 'Finish a moved session' },
+    { id: 'week3', icon: '⭐', name: 'Busy Week', desc: '3 sessions in one week' },
     { id: 'finisher', icon: '🏆', name: 'Show-Off Day', desc: 'Finish Week 4, Day C' }
   ];
 
@@ -420,9 +420,9 @@
       session: 'other', pweek: pweek,
       title: a.gentle ? 'Gentle movement or rest' : 'Your own fun activity',
       duration: a.otherDuration, minutes: a.otherMinutes, equipment: a.otherEquipment,
-      steps: ['Pick something you enjoy and write it below.', 'Ideas: ' + ideas.join(' · ') + '.', 'Press Done, Did part or Rest when you’re finished.'],
-      easier: ['Shorter is fine.', 'Choose something calm if you’re tired.', 'Ask an adult before trying anything new.'],
-      note: a.gentle ? 'Today is easy-going. Rest is a perfectly good choice.' : 'Your choice today.'
+      steps: ideas,
+      easier: ['Shorter is fine.', 'Tired? Pick something calm.'],
+      note: a.gentle ? 'Easy day. Rest is a great choice too.' : 'Your choice!'
     };
   }
 
@@ -442,7 +442,7 @@
     $('#player').innerHTML =
       '<div class="player-top"><span class="level">Level ' + level + '</span><span class="xp-total">' + xp + ' XP total</span></div>' +
       '<div class="bar" role="progressbar" aria-label="Progress to next level" aria-valuemin="0" aria-valuemax="' + XP_PER_LEVEL + '" aria-valuenow="' + into + '"><span style="width:' + pct + '%"></span></div>' +
-      '<p class="bar-caption">' + (XP_PER_LEVEL - into) + ' XP to Level ' + (level + 1) + ' · 10 XP for every session you take part in</p>';
+      '<p class="bar-caption">' + (XP_PER_LEVEL - into) + ' XP to Level ' + (level + 1) + '</p>';
   }
 
   function renderWeek() {
@@ -470,7 +470,7 @@
 
     var pw = programWeekFor(start);
     $('#programWeek').innerHTML =
-      '<span class="pw-label">Programme week</span>' +
+      '<span class="pw-label">Week</span>' +
       '<div class="pw-buttons" role="group" aria-label="Programme week for this calendar week">' +
       [1, 2, 3, 4].map(function (n) {
         return '<button type="button" class="btn small" data-action="set-pweek" data-week="' + n + '" aria-pressed="' + (n === pw) + '">' + n + '</button>';
@@ -479,7 +479,7 @@
 
     var s = weekStats(start);
     var txt = s.sessions === 0
-      ? 'No sessions logged this week yet — every session you take part in earns 10 XP.'
+      ? 'Each session = 10 XP'
       : '<strong>' + s.sessions + '</strong> session' + (s.sessions === 1 ? '' : 's') + ' · <strong>' + s.minutes + '</strong> min · <strong>' + s.xp + '</strong> XP this week';
     if (s.rests) txt += ' · ' + s.rests + ' rest day' + (s.rests === 1 ? '' : 's');
     $('#weekSummary').innerHTML = txt;
@@ -498,12 +498,12 @@
     var picker = '';
     if (r.workout && r.workout.pick5) {
       var picks = state.picks[card.key] || [];
-      picker = '<fieldset class="picker"><legend>Pick your 5 favourite exercises (' + picks.length + '/5)</legend><div class="pills">' +
+      picker = '<fieldset class="picker"><legend>Pick 5 favourites (' + picks.length + '/5)</legend><div class="pills">' +
         PICKABLE.map(function (id) {
           var on = picks.indexOf(id) !== -1;
           return '<label><input type="checkbox" data-field="pick" value="' + id + '"' + (on ? ' checked' : '') +
             (!on && picks.length >= 5 ? ' disabled' : '') + '><span>' + esc(EX[id].name) + '</span></label>';
-        }).join('') + '</div><p class="hint">Do each one 2 rounds — 8 reps or a 15-second hold, or whatever felt “about right” before.</p></fieldset>';
+        }).join('') + '</div><p class="hint">2 rounds of each.</p></fieldset>';
     }
     if (!r.items.length) return picker;
     var rows = r.items.map(function (i, idx) {
@@ -515,7 +515,7 @@
         '<span class="ex-sets" aria-label="' + n + ' of ' + i.sets + ' sets done">' + dots(n, i.sets) + '</span></li>';
     }).join('');
     var intro = r.workout && r.workout.showOff
-      ? '<p class="note">Week 1 moves again — notice how much easier they feel now, and say so in the feedback.</p>' : '';
+      ? '<p class="note">Week 1 moves again — see how easy they feel now!</p>' : '';
     return picker + intro + '<ol class="ex-list">' + rows + '</ol>';
   }
 
@@ -530,7 +530,7 @@
     if (!items.length) return '<div class="guide"><p>Pick your 5 exercises first.</p></div>';
     var idx = Math.min(guide[card.key] || 0, items.length);
     if (idx >= items.length) {
-      return '<div class="guide finished"><p class="g-big">🎉 All exercises finished!</p><p>Press <strong>Done</strong> below to log it and get your XP.</p>' +
+      return '<div class="guide finished"><p class="g-big">🎉 All done!</p><p>Press <strong>Done</strong> to get your XP.</p>' +
         '<div class="row"><button type="button" class="btn small ghost" data-action="g-prev">‹ Back</button></div></div>';
     }
     var i = items[idx];
@@ -552,7 +552,7 @@
       '<button type="button" class="btn ghost" data-action="g-skip">Skip</button></div>' +
       '<div class="row"><button type="button" class="btn small ghost" data-action="g-prev"' + (idx === 0 ? ' disabled' : '') + '>‹ Back</button>' +
       '<button type="button" class="btn small" data-action="g-next">Next exercise ›</button></div>' +
-      '<p class="hint">Rest as long as you need between sets.</p>' +
+      '<p class="hint">Rest between sets. Pause any time.</p>' +
       '</div>';
   }
 
@@ -565,14 +565,13 @@
 
     var head =
       '<div class="card-head"><div class="when">' + esc(DAY_NAMES[wd]) + ' · ' + esc(fmtShort(card.date)) + '</div>' +
-      '<label class="planned">Planned time <input type="time" data-field="planned" data-weekday="' + wd + '" value="' + esc(planned) + '" aria-label="Planned time for ' + DAY_NAMES[wd] + 's"></label></div>';
+      '<label class="planned">Time <input type="time" data-field="planned" data-weekday="' + wd + '" value="' + esc(planned) + '" aria-label="Planned time for ' + DAY_NAMES[wd] + 's"></label></div>';
 
     if (e && e.status === 'rescheduled') {
       var rr = resolve(card);
       return '<article class="card moved-out" data-key="' + k + '">' + head +
         '<h3>' + esc(rr.title) + '</h3>' +
         '<div class="logbox"><div class="result moved">↷ Moved to ' + esc(fmtShort(e.to)) + '</div>' +
-        '<p class="muted">Nothing missed — it’s waiting on the new day.</p>' +
         '<div class="row"><button type="button" class="btn small" data-action="goto" data-date="' + esc(e.to) + '">Go to ' + esc(fmtShort(e.to)) + '</button>' +
         '<button type="button" class="btn small ghost" data-action="undo">Undo move</button></div></div></article>';
     }
@@ -588,8 +587,6 @@
       choices = '<div class="choices" role="group" aria-label="Choose what to do">' + a.options.map(function (o) {
         return '<button type="button" class="btn small" data-action="choose" data-choice="' + o + '" aria-pressed="' + (r.session === o) + '">' + esc(choiceLabel(o, a)) + '</button>';
       }).join('') + '</div>';
-      if (card.act === 'fri') choices += '<p class="hint">Day C is today’s plan — or catch up on A or B if you missed one.</p>';
-      if (card.act === 'sat') choices += '<p class="hint">Something fun, or catch up on a programme day.</p>';
     }
 
     var body;
@@ -597,17 +594,15 @@
       var open = guide[card.key] !== undefined;
       body = renderExerciseList(card, r) +
         '<button type="button" class="btn watch" data-action="follow" aria-expanded="' + open + '">' +
-        (open ? '✕ Close step-by-step' : '▶ Follow along step by step') + '</button>' +
-        (open ? renderGuide(card, r) : '') +
-        '<p class="mini-safety">Move at your own pace; pause whenever needed. Stop and tell an adult if anything hurts or you feel dizzy or unwell.</p>';
+        (open ? '✕ Close' : '▶ Start workout') + '</button>' +
+        (open ? renderGuide(card, r) : '');
     } else {
       body = '<p class="no-video">' + esc(r.note) + '</p>';
       if (r.session === 'other') {
         body += '<label class="other-input">What will you do?<input type="text" maxlength="60" data-field="other" value="' + esc(state.otherText[card.key] || '') + '" placeholder="e.g. dancing, bike ride, stretching"></label>';
       }
-      body += '<div class="how"><div><h4>How to do it</h4><ol>' + r.steps.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ol></div>' +
-        '<div class="easier"><h4>Easier options</h4><ul>' + r.easier.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ul></div></div>' +
-        '<p class="mini-safety">Pause whenever you need. Stop and tell an adult if anything hurts or you feel dizzy or unwell.</p>';
+      body += '<div class="how"><div><h4>What to do</h4><ol>' + r.steps.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ol></div>' +
+        '<div class="easier"><h4>Easier options</h4><ul>' + r.easier.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ul></div></div>';
     }
 
     var status;
@@ -617,12 +612,12 @@
       status = logSummary(e);
     } else if (e && e.status === 'rest') {
       cardCls += ' rested';
-      status = '<div class="logbox"><div class="result rest">☾ Rest day</div><p>Resting helps your body get stronger. Nice choice.</p>' +
+      status = '<div class="logbox"><div class="result rest">☾ Rest day — recharging!</div>' +
         '<div class="row"><button type="button" class="btn small ghost" data-action="undo">Undo</button></div></div>';
     } else {
       status = '<div class="actions">' +
         '<button type="button" class="btn done" data-action="open-log" data-mode="done">✔ Done</button>' +
-        '<button type="button" class="btn part" data-action="open-log" data-mode="part">◑ Did part</button>' +
+        '<button type="button" class="btn part" data-action="open-log" data-mode="part">½ Did part</button>' +
         '<button type="button" class="btn rest" data-action="rest">☾ Rest</button>' +
         '<button type="button" class="btn move" data-action="open-move">↷ Reschedule</button>' +
         '</div>' + moveForm();
@@ -643,7 +638,7 @@
   }
 
   function logSummary(e) {
-    var label = e.status === 'done' ? '✔ Done' : '◑ Did part';
+    var label = e.status === 'done' ? '✔ Done' : '½ Did part';
     var what = sessionLabel(e);
     return '<div class="logbox"><div class="result ok">' + label + ' · +' + XP_PER_SESSION + ' XP</div><dl>' +
       (what ? '<dt>Activity</dt><dd>' + esc(what) + '</dd>' : '') +
@@ -660,13 +655,13 @@
     }).join('');
     return '<form class="form log-form" data-default-minutes="' + (r.minutes || '') + '" hidden>' +
       '<h4 class="form-title">Log it</h4>' +
-      '<fieldset><legend>How much did you do?</legend><div class="pills">' +
+      '<fieldset><legend>How much?</legend><div class="pills">' +
       '<label><input type="radio" name="status" value="done"><span>Done</span></label>' +
       '<label><input type="radio" name="status" value="part"><span>Did part</span></label></div></fieldset>' +
-      '<label class="field">Actual minutes <span class="hint">Write the real time — a short session still counts.</span>' +
+      '<label class="field">Minutes' +
       '<input type="number" name="minutes" min="1" max="300" inputmode="numeric" required></label>' +
-      '<label class="field">Finished at<input type="datetime-local" name="completedAt" required></label>' +
-      '<fieldset><legend>How did it feel? <span class="hint">(optional)</span></legend><div class="pills">' + fb + '</div></fieldset>' +
+      '<label class="field">Finished<input type="datetime-local" name="completedAt" required></label>' +
+      '<fieldset><legend>How did it feel?</legend><div class="pills">' + fb + '</div></fieldset>' +
       '<div class="row"><button type="submit" class="btn primary">Save</button><button type="button" class="btn ghost" data-action="cancel">Cancel</button></div>' +
       '</form>';
   }
@@ -674,8 +669,8 @@
   function moveForm() {
     var today = todayStr();
     return '<form class="form move-form" hidden>' +
-      '<h4>Move this to another day</h4>' +
-      '<label class="field">New day <span class="hint">Any day in the next two weeks.</span>' +
+      '<h4>Move to which day?</h4>' +
+      '<label class="field">Day' +
       '<input type="date" name="to" min="' + today + '" max="' + addDays(today, 14) + '" required></label>' +
       '<div class="row"><button type="submit" class="btn primary">Move it</button><button type="button" class="btn ghost" data-action="cancel">Cancel</button></div>' +
       '</form>';
@@ -687,7 +682,7 @@
       var on = got[b.id];
       return '<div class="badge ' + (on ? 'earned' : 'locked') + '"><span class="b-icon" aria-hidden="true">' + b.icon + '</span>' +
         '<span class="b-name">' + esc(b.name) + '</span><span class="b-desc">' + esc(b.desc) + '</span>' +
-        '<span class="b-state">' + (on ? 'Earned!' : 'Not yet') + '</span></div>';
+        (on ? '<span class="b-state">Earned!</span>' : '') + '</div>';
     }).join('');
   }
 
@@ -750,7 +745,7 @@
     hideForms(art);
     var f = art.querySelector('.log-form');
     f.querySelectorAll('input[name="status"]').forEach(function (r) { r.checked = r.value === mode; });
-    f.querySelector('.form-title').textContent = existing ? 'Edit your session' : mode === 'done' ? 'Great — log your session' : 'Nice — every bit counts';
+    f.querySelector('.form-title').textContent = existing ? 'Edit' : mode === 'done' ? 'Nice work!' : 'Every bit counts!';
     var min = f.elements.minutes;
     var when = f.elements.completedAt;
     if (existing) {
@@ -992,6 +987,9 @@
       if (!timer) render();
     }
   }, 60000);
+
+  // lets :active button styles show on iPad/iPhone taps
+  document.addEventListener('touchstart', function () {}, { passive: true });
 
   save(); // stores programStart on first visit
   render();
